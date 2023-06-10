@@ -26,7 +26,6 @@ router.post(
     async (req, res, next) => {
       const { credential, password } = req.body;
       const user = await User.unscoped().findOne({
-        attributes:['id', 'firstName', 'lastName', 'email', 'userName'],
         where: {
           [Op.or]: {
             username: credential,
