@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Spot.hasMany(models.SpotImage, {foreignKey:'spotId'})
-      Spot.belongsTo(models.User,{foreignKey:'ownerId', as:'Owner', as:'User'})
+      Spot.belongsTo(models.User,{foreignKey:'ownerId', as:'Owner'})
+      Spot.belongsTo(models.User,{foreignKey:'ownerId', as:'User'})
       Spot.hasMany(models.Review, {foreignKey:'spotId'})
       Spot.hasMany(models.Booking, {foreignKey:'spotId'})
     }
@@ -30,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Spot',
+    scopes: {
+      exclusions:{
+      attributes: {exclude: ["createdAt", "updatedAt"]}
+    }
+  }
   });
   return Spot;
 };
