@@ -11,8 +11,8 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
     if(!city) error.city="City is required"
     if(!state) error.state="State is required"
     if(!country) error.country="Country is required"
-    if(Number.isNaN(lat)) error.lat="Latitude is not valid"
-    if(Number.isNaN(lng)) error.lng="Longitude is not valid"
+    if(!Number.isNaN(lat)) error.lat="Latitude is not valid"
+    if(!Number.isNaN(lng)) error.lng="Longitude is not valid"
     if(!name) error.name="Name is required"
     if(name.length > 50) error.name="Name must be less than 50 characters"
     if(!description) error.description="Price per day is required"
@@ -112,7 +112,7 @@ router.get('/:spotId', async(req, res) => {
         place.numReviews= count.length
         place.avgStarRating = avgRating
         answer.push(place)
-    res.json({Spots:answer})
+    res.json(answer)
     }else{
         res.status(404)
         return res.json({message: "Spot couldn't be found"})
@@ -135,7 +135,7 @@ router.get('/:spotId', async(req, res) => {
     preview
  })
 
- return res.status(201).json({id:newImage.id,url:newImage.url,preview:newImage.preview})
+ return res.json({id:newImage.id,url:newImage.url,preview:newImage.preview})
     })
 
 
@@ -181,7 +181,7 @@ if(error){
 })
 
 
-router.delete('/:spotId', async (req,res)=>{
+router.delete('/:spotId', requireAuth,async (req,res)=>{
     let spot = await Spot.findByPk(req.params.spotId)
     if (!spot||spot.ownerId !== req.user.dataValues.id){
         res.status(404)
