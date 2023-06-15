@@ -21,7 +21,7 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
   if (!Number.isNaN(lng)) error.lng = "Longitude is not valid";
   if (!name) error.name = "Name is required";
   if (name.length > 50) error.name = "Name must be less than 50 characters";
-  if (!description) error.description = "Price per day is required";
+  if (!description) error.description = "Description is required";
   if (!price) error.price = "Price per day is required";
 
   if (Object.keys(error).length > 0) {
@@ -149,12 +149,13 @@ router.get("/:spotId", async (req, res) => {
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const { url, preview } = req.body;
   const spot = await Spot.findByPk(req.params.spotId);
-  if (!spot || spot.ownerId !== req.user.dataValues.id) {
+  if (!spot) {
     res.status(404);
     return res.json({
       message: "Spot couldn't be found",
     });
   }
+  if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"Requires Authorization"})
   const newImage = await spot.createSpotImage({
     url,
     preview,

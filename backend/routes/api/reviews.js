@@ -40,7 +40,7 @@ router.post('/:reviewId/images', requireAuth, async(req,res)=>{
     if(review.userId !== req.user.dataValues.id) return res.status(403).json({message:"Requires Authorization"})
     if(url === "") res.status(400).json({message:'please provide a url'})
 
-    if(review.ReviewImages.length > 11 ){
+    if(review.ReviewImages.length > 9 ){
         return res.status(403).json({message: "Maximum number of images for this resource was reached"})
     }
 
