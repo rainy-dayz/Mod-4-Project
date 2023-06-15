@@ -35,8 +35,9 @@ module.exports = {
       {
         spotId:4,
         url:'image url',
-        preview:true
+        preview:false
       },
+     
     ], {});
   },
 
