@@ -112,7 +112,7 @@ router.get('/:spotId/bookings', requireAuth,async(req, res) => {
     const spot = await Spot.findByPk(req.params.spotId);
 
     if(!spot) return res.status(404).json({message: "Spot couldn't be found"})
-    const queries = { where: { spotid:req.params.spotId } };
+    const queries = { where: { spotId:req.params.spotId } };
 
     if (spot.ownerId !== req.user.dataValues.id) queries.attributes = ["spotId","startDate", "endDate"];
     else queries.include = [{ model: User, attributes: ["id", "firstName", "lastName"] }];
