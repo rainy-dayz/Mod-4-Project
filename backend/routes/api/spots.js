@@ -234,7 +234,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
       message: "Spot couldn't be found",
     });
   }
-  if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"Requires Authorization"})
+  if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"To add an image you must own this spot"})
   const newImage = await spot.createSpotImage({
     url,
     preview,
@@ -294,10 +294,11 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
 
 router.put("/:spotId", requireAuth, async (req, res, next) => {
   let spot = await Spot.findByPk(req.params.spotId);
-  if (!spot || spot.ownerId !== req.user.dataValues.id) {
+  if (!spot) {
     res.status(404);
     return res.json({ message: "Spot couldn't be found" });
   }
+  if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"Cannot edit a spot you do not own"})
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
   let error = validateSpot(address,city,state,country,lat,lng,name, description, price)
@@ -335,10 +336,11 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.delete("/:spotId", requireAuth, async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId);
-  if (!spot || spot.ownerId !== req.user.dataValues.id) {
+  if (!spot) {
     res.status(404);
     return res.json({ message: "Spot couldn't be found" });
   }
+  if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"Cannot delete a spot you do not own"})
   await spot.destroy();
 
   res.json({ message: "Successfully deleted" });
