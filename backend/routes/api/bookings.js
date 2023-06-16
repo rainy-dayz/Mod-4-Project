@@ -22,7 +22,7 @@ if(!booking.length) res.json({message: "You have no bookings at this time"})
         }else spot.Spot.previewImage='no preview image'
     }
     delete spot.Spot.SpotImages
-    
+
     answer.push(spot)
     })
     res.json({Bookings:answer})
@@ -85,12 +85,10 @@ router.delete('/:bookingId', requireAuth,async (req,res)=>{
     let today = new Date()
 
     if(today >= startDay && today <=endDay) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
-    console.log(today.toDateString())
-    console.log(booking.startDate.toDateString())
+  
     if(booking.userId !== req.user.dataValues.id || !spotauth ) {
         return res.status(403).json({message:"You are not authorized the delete this booking"})
     }
-    if(notime>=booking.startDate && notime <=booking.endDate) return res.status(400).json({message:"cannot delete a booking in progress"})
     await booking.destroy()
 
     res.json({message:"Successfully deleted"})
