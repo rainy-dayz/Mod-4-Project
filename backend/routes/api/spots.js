@@ -71,7 +71,7 @@ router.get("/", async (req, res) => {
         if(image.preview){
             spot.previewImage = image.url
             break;
-          }else spot.previewImage = "no preview image"
+          }else if(!image.preview || !image) spot.previewImage = "no preview image"
     }
     delete spot.SpotImages;
     delete spot.Reviews;
