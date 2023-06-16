@@ -74,8 +74,8 @@ router.get("/", async (req, res) => {
             break;
           }else if(!image.preview) spot.previewImage = "no preview image"
     }
-    delete spot.SpotImages;
     delete spot.Reviews;
+    delete spot.SpotImages;
     spot.avgRating = Math.round(avgRating*100)/100;
     answer.push(spot);
   });
@@ -103,8 +103,8 @@ router.get("/current", requireAuth, async (req, res) => {
         break;
       }else spot.previewImage = "no preview image"
     }
-    delete spot.SpotImages;
     delete spot.Reviews;
+    delete spot.SpotImages;
     spot.avgRating = Math.round(avgRating*100)/100;
     answer.push(spot);
   });
@@ -161,7 +161,7 @@ router.get("/:spotId", async (req, res) => {
   let answer = [];
   let spot = await Spot.findByPk(req.params.spotId, {
     include: [
-      { model: SpotImage },
+      { model: SpotImage, attributes:{exclude:["spotId",'createdAt','updatedAt']}},
       { model: User, as: "Owner", attributes: ["id", "firstName", "lastName"] },
       { model: Review },
     ],
