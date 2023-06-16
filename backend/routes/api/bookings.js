@@ -12,7 +12,7 @@ router.get('/current', requireAuth, async (req, res)=>{
         include:{model:Spot, attributes:{exclude:['description','createdAt','updatedAt']},include:{model:SpotImage}}
 
     })
-// if(!booking.length) res.json({message: "You have no bookings at this time"})
+if(!booking.length) res.json({message: "You have no bookings at this time"})
     booking.forEach((spot)=> {
         spot =spot.toJSON()
     for(let image of spot.Spot.SpotImages){
@@ -22,6 +22,7 @@ router.get('/current', requireAuth, async (req, res)=>{
         }else spot.Spot.previewImage='no preview image'
     }
     delete spot.Spot.SpotImages
+    this.delete.spot.Spot
     answer.push(spot)
     })
     res.json({Bookings:answer})
