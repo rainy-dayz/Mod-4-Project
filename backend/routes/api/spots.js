@@ -32,10 +32,10 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
 router.get("/", async (req, res) => {
   let error2 = {};
 
-  // Phase 2A: Use query params for page & size
+
   let{page,size}= req.query
   if(!size || size >20) size =20
-  // if(!page)page=1
+
   if(!page || page > 10) page =1
 
   let pagination={}

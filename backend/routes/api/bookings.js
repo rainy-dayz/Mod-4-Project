@@ -43,10 +43,7 @@ router.put('/:bookingId', requireAuth, async (req, res)=>{
 
     if(today >= bookingDay) return res.status(403).json({message: "Past bookings can't be modified"})
 
-      const spot = await Spot.findOne({
-        where:{id:bookings.spotId},
-        include:[Booking]
-      })
+      const spot = await Spot.findOne({where:{id:bookings.spotId},include:[Booking]})
       let errors={}
       let booking = spot.Bookings
       booking.forEach(book =>{
@@ -85,7 +82,7 @@ router.delete('/:bookingId', requireAuth,async (req,res)=>{
     let today = new Date()
 
     if(today >= startDay && today <=endDay) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
-  
+
     if(booking.userId !== req.user.dataValues.id || !spotauth ) {
         return res.status(403).json({message:"You are not authorized the delete this booking"})
     }
