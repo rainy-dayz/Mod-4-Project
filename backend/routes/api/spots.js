@@ -48,8 +48,8 @@ router.get("/", async (req, res) => {
   pagination.limit=size
   pagination.offset=size*(page-1)
 }
-  if(page < 1)error2.page=('Page must be greater thwn or equal to 1')
-  if(size < 1)error2.size= "Size must be greater than or equal to 1"
+  if(page < 1)error2.page=("Page must be greater thwn or equal to 1")
+  if(size < 1)error2.size= ("Size must be greater than or equal to 1")
   if (Object.keys(error2).length > 0) {
     res.status(400)
      return res.json({message:"Bad Request",errors:error2})
@@ -57,6 +57,7 @@ router.get("/", async (req, res) => {
   let answer = [];
   let spot = await Spot.findAll({
     include: [{ model: SpotImage }, { model: Review, attributes: ["stars"] }],
+    ...pagination
   });
 
   spot.forEach((spot) => {
