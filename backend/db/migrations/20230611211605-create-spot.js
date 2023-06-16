@@ -14,8 +14,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       ownerId: {
-        type: Sequelize.INTEGER,
-        onDelete:'CASCADE'
+        type: Sequelize.INTEGER
       },
       address: {
         type: Sequelize.STRING

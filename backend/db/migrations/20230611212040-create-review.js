@@ -11,8 +11,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-        onDelete:'CASCADE'
+        type: Sequelize.INTEGER
       },
       spotId: {
         type: Sequelize.INTEGER
