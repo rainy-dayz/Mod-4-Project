@@ -22,7 +22,7 @@ router.delete('/:imageId', requireAuth,async (req,res)=>{
     if(spotid) return res.status(403).json({message:"You are not authorized the delete this spot image"})
     await spotimage.destroy()
 
-    res.json({message:"Successfully deleted"})
+    res.status(404).json({message:"Successfully deleted"})
 
 })
 

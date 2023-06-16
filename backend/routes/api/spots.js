@@ -185,7 +185,7 @@ router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
     return res.status(404).json({message: "Spot couldn't be found"});
   }
   if(spot.ownerId === req.user.dataValues.id){
-    return res.status(403).json({message:"Cannot book a property your own"})
+    return res.status(403).json({message:"Cannot book a property you own"})
   }
   if(startDate >=endDate){
     return res.status(400).json({message:"Bad Request", errors:{endDate:"endDate cannot be on or before startDate"}})
@@ -206,7 +206,7 @@ allBookings.forEach(final =>{
 })
 
 if(Object.keys(errors).length){
-  return res.status(403).json({message: "Sorry, this spot is already booked for the specified dates"})
+  return res.status(403).json({message: "Sorry, this spot is already booked for the specified dates",errors:errors})
 }else{
   const newbooking = await spot.createBooking({
     userId:req.user.dataValues.id,

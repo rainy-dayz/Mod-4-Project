@@ -20,7 +20,7 @@ router.delete('/:imageId', requireAuth,async (req,res)=>{
     if(reviewid) return res.status(403).json({message:"You are not authorized the delete this review image"})
     await reviewimage.destroy()
 
-    res.json({message:"Successfully deleted"})
+    res.status(404).json({message:"Successfully deleted"})
 
 })
 
