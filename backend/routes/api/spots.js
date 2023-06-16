@@ -125,21 +125,13 @@ router.get('/:spotId/bookings', requireAuth,async(req, res) => {
   });
 
 
-router.get("/:spotId/reviews", async (req, res) => {
+router.get("/:spotId/reviews", requireAuth,async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId, {
     attributes: [],
     include: [
       {
         model: Review,
-        attributes: [
-          "id",
-          "spotId",
-          "userId",
-          "review",
-          "stars",
-          "createdAt",
-          "updatedAt",
-        ],
+        attributes: ["id","spotId","userId","review","stars","createdAt","updatedAt"],
         include: [
           {
             model: User,

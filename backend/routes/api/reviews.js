@@ -34,10 +34,9 @@ router.post('/:reviewId/images', requireAuth, async(req,res)=>{
     const { url} = req.body;
     let review = await Review.findByPk(req.params.reviewId, {include:{model:ReviewImage}})
     if (!review){
-        res.status(404)
-        return res.json({message: "Review couldn't be found"})
+        return res.status(404).json({message: "Review couldn't be found"})
     }
-    if(review.userId !== req.user.dataValues.id) return res.status(403).json({message:"Requires Authorization"})
+    if(review.userId !== req.user.dataValues.id) return res.status(403).json({message:"Review must belong to the current user"})
     if(url === "") res.status(400).json({message:'please provide a url'})
 
     if(review.ReviewImages.length > 9 ){
@@ -69,16 +68,12 @@ router.put('/:reviewId', requireAuth, async (req,res) =>{
     let reviews = await Review.findByPk(req.params.reviewId)
     const { review, stars,userId,spotId} = req.body;
   if (!reviews) {
-    res.status(404);
-    return res.json({
-      message: "Review couldn't be found",
-    });
+    return res.status(400).json({message: "Review couldn't be found"});
   }
-if(reviews.userId !== req.user.dataValues.id) return res.status(403).json({message:'Requires Authorization'})
+if(reviews.userId !== req.user.dataValues.id) return res.status(403).json({message:'You cannot edit a review that belongs to another user'})
   let error = validateReview(review, stars);
-  if (error) {
-    res.status(400);
-    return res.json({ message: "Bad Request", error: error });
+  if (error){
+    return res.status(400).json({ message: "Bad Request", error: error });
   }
   await reviews.set({
     userId: req.user.dataValues.id,
