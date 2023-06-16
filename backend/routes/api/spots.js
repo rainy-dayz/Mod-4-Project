@@ -10,8 +10,8 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
   if (!city) error.city = "City is required";
   if (!state) error.state = "State is required";
   if (!country) error.country = "Country is required";
-  if (Number.isNaN(lat) || !lat) error.lat = "Latitude is not valid";
-  if (Number.isNaN(lng) || !lng) error.lng = "Longitude is not valid";
+  if (lat >90 || lat <-90 || lat === "") error.lat = "Latitude is not valid";
+  if (lng >180 || lng <-180 || lng ==="") error.lng = "Longitude is not valid";
   if (!name) error.name = "Name is required";
   if (name.length > 50) error.name = "Name must be less than 50 characters";
   if (!description) error.description = "Description is required";
