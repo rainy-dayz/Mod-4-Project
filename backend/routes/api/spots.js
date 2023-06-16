@@ -30,6 +30,30 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
 };
 
 router.get("/", async (req, res) => {
+  let error2 = {};
+
+  // Phase 2A: Use query params for page & size
+  let{page,size}= req.query
+  if(!size || size >20) size =20
+  // if(!page)page=1
+  if(!page || page > 10) page =1
+
+  let pagination={}
+
+  page=parseInt(page)
+  size=parseInt(size)
+
+
+  if(page >= 1 && size >=1){
+  pagination.limit=size
+  pagination.offset=size*(page-1)
+}
+  if(page < 1)error2.page=('Page must be greater thwn or equal to 1')
+  if(size < 1)error2.size= "Size must be greater than or equal to 1"
+  if (Object.keys(error2).length > 0) {
+    res.status(400)
+     return res.json({message:"Bad Request",errors:error2})
+  }
   let answer = [];
   let spot = await Spot.findAll({
     include: [{ model: SpotImage }, { model: Review, attributes: ["stars"] }],
@@ -50,10 +74,10 @@ router.get("/", async (req, res) => {
     }
     delete spot.SpotImages;
     delete spot.Reviews;
-    spot.avgRating = avgRating;
+    spot.avgRating = Math.round(avgRating*100)/100;
     answer.push(spot);
   });
-  res.json({ Spots: answer });
+  res.json({ Spots: answer,page,size });
 });
 
 router.get("/current", requireAuth, async (req, res) => {
@@ -78,10 +102,23 @@ router.get("/current", requireAuth, async (req, res) => {
     }
     delete spot.SpotImages;
     delete spot.Reviews;
-    spot.avgRating = avgRating;
+    spot.avgRating = Math.round(avgRating*100)/100;
     answer.push(spot);
   });
   res.json({ Spots: answer });
+});
+
+router.get('/:spotId/bookings', requireAuth,async(req, res) => {
+  const spot = await Spot.findByPk(req.params.spotId);
+
+  if(!spot) return res.json({"message": "Spot couldn't be found"})
+  const queries = { where: { spotid:req.params.spotId } };
+
+  if (spot.ownerId !== req.user.dataValues.id) queries.attributes = ["spotId","startDate", "endDate"];
+  else queries.include = [{ model: User, attributes: ["id", "firstName", "lastName"] }];
+
+  const Bookings = await Booking.findAll(queries);
+  res.json({ Bookings });
 });
 
 
@@ -136,7 +173,7 @@ router.get("/:spotId", async (req, res) => {
     let place = spot.toJSON();
     delete place.Reviews;
     place.numReviews = count.length;
-    place.avgStarRating = avgRating;
+    place.avgStarRating = Math.round(avgRating*100)/100;
     answer.push(place);
     res.json(answer);
   } else {
@@ -145,6 +182,45 @@ router.get("/:spotId", async (req, res) => {
   }
 });
 
+
+router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
+  const {startDate,endDate} = req.body
+  const spot = await Spot.findByPk(req.params.spotId);
+  if(!spot){
+    return res.status(404).json({message: "Spot couldn't be found"});
+  }
+  if(spot.ownerId === req.user.dataValues.id){
+    return res.status(403).json({message:"Cannot book a property your own"})
+  }
+  if(startDate >=endDate){
+    return res.status(400).json({message:"Bad Request", errors:{endDate:"endDate cannot be on or before startDate"}})
+  }
+const bookings = await Booking.findAll()
+let allBookings=[]
+const bookingMatch = bookings.forEach(book =>{
+  book=book.toJSON()
+  if(spot.id === book.spotId) allBookings.push(book)
+
+})
+
+let errors={}
+
+allBookings.forEach(final =>{
+  if(final.startDate <= startDate && final.endDate >= startDate)errors.startDate = "Start date conflicts with an existing booking"
+  if(final.startDate <=endDate && final.endDate >= endDate) errors.endDate="End date conflicts with an existing booking"
+})
+
+if(Object.keys(errors).length){
+  return res.status(403).json({message: "Sorry, this spot is already booked for the specified dates"})
+}else{
+  const newbooking = await spot.createBooking({
+    userId:req.user.dataValues.id,
+    startDate,
+    endDate,
+  });
+  res.json(spot)
+}
+})
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const { url, preview } = req.body;
