@@ -111,7 +111,6 @@ router.get("/current", requireAuth, async (req, res) => {
 router.get("/:spotId/bookings", requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
   const spot = await Spot.findByPk(spotId);
-  throwIfNull(spot);
   const isOwner = spot.ownerId === req.user.id;
   const options = { where: { spotId } };
   if (isOwner) {
