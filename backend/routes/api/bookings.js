@@ -15,6 +15,7 @@ router.get('/current', requireAuth, async (req, res)=>{
 if(!booking.length) res.json({message: "You have no bookings at this time"})
     booking.forEach((spot)=> {
         spot =spot.toJSON()
+        if(!spot.Spot.SpotImages.length) spot.previewImage='no images'
     for(let image of spot.Spot.SpotImages){
         if(image.preview) {
             spot.Spot.previewImage = image.url;

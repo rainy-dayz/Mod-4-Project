@@ -17,8 +17,8 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
   if (!city) error.city = "City is required";
   if (!state) error.state = "State is required";
   if (!country) error.country = "Country is required";
-  if (!Number.isNaN(lat)) error.lat = "Latitude is not valid";
-  if (!Number.isNaN(lng)) error.lng = "Longitude is not valid";
+  if (Number.isNaN(lat) || !lat) error.lat = "Latitude is not valid";
+  if (Number.isNaN(lng) || !lng) error.lng = "Longitude is not valid";
   if (!name) error.name = "Name is required";
   if (name.length > 50) error.name = "Name must be less than 50 characters";
   if (!description) error.description = "Description is required";
@@ -67,11 +67,12 @@ router.get("/", async (req, res) => {
       total += review.stars;
     });
     let avgRating = count.length > 0 ? total / count.length : null;
+    if(!spot.SpotImages.length) spot.previewImage='no images'
     for (let image of spot.SpotImages) {
         if(image.preview){
             spot.previewImage = image.url
             break;
-          }else if(!image.preview || !image) spot.previewImage = "no preview image"
+          }else if(!image.preview) spot.previewImage = "no preview image"
     }
     delete spot.SpotImages;
     delete spot.Reviews;
@@ -95,6 +96,7 @@ router.get("/current", requireAuth, async (req, res) => {
       total += review.stars;
     });
     let avgRating = count.length > 0 ? total / count.length : null;
+    if(!spot.SpotImages.length) spot.previewImage='no images'
     for (let image of spot.SpotImages) {
       if(image.preview){
         spot.previewImage = image.url
@@ -323,8 +325,7 @@ router.post("/", requireAuth, async (req, res, next) => {
 
   let error = validateSpot(address,city,state,country,lat,lng,name, description, price)
   if (error) {
-    res.status(400);
-    return res.json({ message: "Bad Request", error: error });
+   return res.status(400).json({ message: "Bad Request", error: error });
   }
   const newSpot = await Spot.create({
     ownerId: req.user.dataValues.id,address,city,state,country,lat,lng,name, description, price
