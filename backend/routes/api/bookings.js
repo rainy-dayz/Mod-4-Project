@@ -23,7 +23,6 @@ if(!booking.length) res.json({message: "You have no bookings at this time"})
         }else spot.Spot.previewImage='no preview image'
     }
     delete spot.Spot.SpotImages
-
     answer.push(spot)
     })
     res.json({Bookings:answer})
