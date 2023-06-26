@@ -71,19 +71,15 @@ router.delete('/:bookingId', requireAuth,async (req,res)=>{
         res.status(404)
         return res.json({message: "Booking couldn't be found"})
     }
-    const spot = await Spot.findAll()
-    const spotauth = spot.find(spot =>{
-        return booking.spotId ===spot.ownerId
-    })
-
 
     let startDay= new Date(booking.startDate)
     let endDay= new Date(booking.endDate)
     let today = new Date()
 
     if(today >= startDay && today <=endDay) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
+    const spot = await Spot.findOne({where:{id:booking.spotId}})
 
-    if(booking.userId !== req.user.dataValues.id || !spotauth ) {
+    if(spot.ownerId !== req.user.dataValues.id && booking.userId !== req.user.dataValues.id) {
         return res.status(403).json({message:"You are not authorized the delete this booking"})
     }
     await booking.destroy()

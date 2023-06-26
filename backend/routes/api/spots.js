@@ -4,55 +4,29 @@ const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
 
-const validateSpot = (address,city,state,country,lat,lng,name, description, price) => {
+const validateSpot = (address,city,state,country,lat,lng,name, description, price, review,stars) => {
   let error = {};
   if (!address) error.address = "Street address is required";
   if (!city) error.city = "City is required";
   if (!state) error.state = "State is required";
   if (!country) error.country = "Country is required";
-  if (lat >90 || lat <-90 || lat === "") error.lat = "Latitude is not valid";
-  if (lng >180 || lng <-180 || lng ==="") error.lng = "Longitude is not valid";
+  const alphaLat =(lat)=> {if(lat.includes("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")) return true}
+  if (lat >90 || lat <-90 || lat === ""|| alphaLat) error.lat = "Latitude is not valid";
+  const alphaLng =(lng)=> {if(lng.includes("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")) return true}
+  if (lng >180 || lng <-180 || lng ==="" || alphaLng) error.lng = "Longitude is not valid";
   if (!name) error.name = "Name is required";
-  if (name.length > 50) error.name = "Name must be less than 50 characters";
+  if (!name || name.length > 50) error.name = "Name must be less than 50 characters";
   if (!description) error.description = "Description is required";
   if (!price) error.price = "Price per day is required";
+
 
   if (Object.keys(error).length > 0) {
     return error;
   }
 };
 
-router.get("/", async (req, res) => {
-  let error2 = {};
-
-
-  let{page,size}= req.query
-  if(!size || size >20) size =20
-
-  if(!page || page > 10) page =1
-
-  let pagination={}
-
-  page=parseInt(page)
-  size=parseInt(size)
-
-
-  if(page >= 1 && size >=1){
-  pagination.limit=size
-  pagination.offset=size*(page-1)
-}
-  if(page < 1)error2.page=("Page must be greater thwn or equal to 1")
-  if(size < 1)error2.size= ("Size must be greater than or equal to 1")
-  if (Object.keys(error2).length > 0) {
-    res.status(400)
-     return res.json({message:"Bad Request",errors:error2})
-  }
-  let answer = [];
-  let spot = await Spot.findAll({
-    include: [{ model: SpotImage }, { model: Review, attributes: ["stars"] }],
-    ...pagination
-  });
-
+let isSpot= (spot)=>{
+  let answer=[]
   spot.forEach((spot) => {
     let total = 0;
     spot = spot.toJSON();
@@ -72,36 +46,49 @@ router.get("/", async (req, res) => {
     spot.avgRating = Math.round(avgRating*100)/100;
     answer.push(spot);
   });
-  res.json({ Spots: answer,page,size });
+  return answer
+}
+router.get("/", async (req, res) => {
+  let error2 = {};
+
+
+  let{page,size}= req.query
+  if(!size || size >20) size =20
+
+  if(!page || page > 10) page =1
+
+  let pagination={}
+
+  page=parseInt(page)
+  size=parseInt(size)
+
+
+  if(page >= 1 && size >=1){
+  pagination.limit=size
+  pagination.offset=size*(page-1)
+}
+  if(page < 1)error2.page=("Page must be greater than or equal to 1")
+  if(size < 1)error2.size= ("Size must be greater than or equal to 1")
+  if (Object.keys(error2).length > 0) {
+    res.status(400)
+     return res.json({message:"Bad Request",errors:error2})
+  }
+  let spot = await Spot.findAll({
+    include: [{ model: SpotImage }, { model: Review, attributes: ["stars"] }],
+    ...pagination
+  });
+  const ans=isSpot(spot)
+  res.json({ Spots: ans,page,size });
 });
 
 router.get("/current", requireAuth, async (req, res) => {
-  let answer = [];
-  let spot = await Spot.findAll({
+  let spots = await Spot.findAll({
     where: { ownerId: req.user.dataValues.id },
     include: { model: Review },
     include: [{ model: SpotImage }, { model: Review, attributes: ["stars"] }],
   });
-  spot.forEach((spot) => {
-    let total = 0;
-    spot = spot.toJSON();
-    const count = spot.Reviews.map((review) => {
-      total += review.stars;
-    });
-    let avgRating = count.length > 0 ? total / count.length : null;
-    if(!spot.SpotImages.length) spot.previewImage='no images'
-    for (let image of spot.SpotImages) {
-      if(image.preview){
-        spot.previewImage = image.url
-        break;
-      }else spot.previewImage = "no preview image"
-    }
-    delete spot.Reviews;
-    delete spot.SpotImages;
-    spot.avgRating = Math.round(avgRating*100)/100;
-    answer.push(spot);
-  });
-  res.json({ Spots: answer });
+  const ans=isSpot(spots)
+  res.json({ Spots: ans });
 });
 
 router.get('/:spotId/bookings', requireAuth,async(req, res) => {
@@ -183,6 +170,9 @@ router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
   if(startDate >=endDate){
     return res.status(400).json({message:"Bad Request", errors:{endDate:"endDate cannot be on or before startDate"}})
   }
+  const startDay = new Date(startDate)
+  const today = new Date()
+  if(today > startDay) return res.status(404).json({message:"Cannot create a bookng for the past"})
 const bookings = await Booking.findAll()
 let allBookings=[]
 const bookingMatch = bookings.forEach(book =>{
@@ -219,6 +209,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
       message: "Spot couldn't be found",
     });
   }
+  if(url === "") res.status(400).json({message:'please provide a url'})
   if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"To add an image you must own this spot"})
   const newImage = await spot.createSpotImage({
     url,
@@ -236,8 +227,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
 const validateReview = (review, stars) => {
   let error = {};
   if (!review) error.review = "Review text is required";
-  if (!stars || stars < 0 || stars > 5)
-    error.stars = "Stars must be an integer from 1 to 5";
+  if (!stars || stars < 0 || stars > 5)error.stars = "Stars must be an integer from 1 to 5";
 
   if (Object.keys(error).length > 0) {
     return error;
