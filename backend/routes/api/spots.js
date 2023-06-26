@@ -4,16 +4,14 @@ const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
 
-const validateSpot = (address,city,state,country,lat,lng,name, description, price, review,stars) => {
+const validateSpot = (address,city,state,country,lat,lng,name, description, price) => {
   let error = {};
   if (!address) error.address = "Street address is required";
   if (!city) error.city = "City is required";
   if (!state) error.state = "State is required";
   if (!country) error.country = "Country is required";
-  const alphaLat =(lat)=> {if(lat.includes("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")) return true}
-  if (lat >90 || lat <-90 || lat === ""|| alphaLat) error.lat = "Latitude is not valid";
-  const alphaLng =(lng)=> {if(lng.includes("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")) return true}
-  if (lng >180 || lng <-180 || lng ==="" || alphaLng) error.lng = "Longitude is not valid";
+  if (lat >90 || lat <-90 || lat === "") error.lat = "Latitude is not valid";
+  if (lng >180 || lng <-180 || lng ==="") error.lng = "Longitude is not valid";
   if (!name) error.name = "Name is required";
   if (!name || name.length > 50) error.name = "Name must be less than 50 characters";
   if (!description) error.description = "Description is required";
