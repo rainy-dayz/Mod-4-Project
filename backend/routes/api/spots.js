@@ -207,7 +207,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     });
   }
   const { url, preview } = req.body;
- 
+
   if(url === "") res.status(400).json({message:'please provide a url'})
   if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"To add an image you must own this spot"})
   const newImage = await spot.createSpotImage({
