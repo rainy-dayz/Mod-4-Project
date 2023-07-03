@@ -3,18 +3,24 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetSpotReviews } from "../../store/review";
-import { deleteSpot } from "../../store/spots";
+// import { deleteSpot } from "../../store/spots";
+import { deleteReview } from '../../store/review';
+import { useHistory } from "react-router-dom";
+
 
 
 const SpotReview = () => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState()
+  const {reviewId} = useParams()
+  const history = useHistory()
 
-  const handleDelete = (e) => {
-    e.preventDefault();
-    dispatch(deleteSpot(spotId));
-  };
+
+  // const handleDelete = (e) => {
+  //   e.preventDefault();
+  //   dispatch(deleteReview(reviewId));
+  // };
 
   useEffect(() => {
     const error = async() => {
@@ -29,7 +35,7 @@ const spotReview =Object.values(useSelector((state) =>{
     return state.reviews.spot
 }))
 // const spot = Object.values(spotObj)[0][0]
-    if(!Object.values(spotReview).length) {return <>Spot does not exist</>}
+    if(!Object.values(spotReview).length) {return <></> }
 // const spotArr = Object.values(spot)
 //   console.log('spot stuff',spot)
 
@@ -45,14 +51,18 @@ const spotReview =Object.values(useSelector((state) =>{
             <>
           <h2>{r.review}</h2>
           <h2>{r.spotId}</h2>
+    <button onClick={(e) => {
+      e.preventDefault()
+      return dispatch(deleteReview(r.id))
+    }}
+      >
+            Delete a Review
+          </button>
           </>
         )
 
         })}
     <h1>ch</h1>
-    <button onClick={handleDelete}>
-            Delete
-          </button>
     </>
   );
 };

@@ -5,6 +5,7 @@ const CREATE_SPOT = "spots/CREATE_SPOT"
 const DELETE_SPOT = "spots/DELETE_SPOT"
 const UPDATE_SPOT = "spots/UPDATE_SPOT"
 const RECIEVE_SPOT = "spots/RECIEVE_SPOT"
+const CREATE_SPOTIMG = "spots/CREATE_SPOTIMG"
 
 
 
@@ -33,6 +34,32 @@ const actionReadSpot = (spots) => ({
     type: RECIEVE_SPOT,
     spots
   })
+
+  const actionCreateSpotImage = (spot) => ({
+    type: CREATE_SPOTIMG,
+    spot
+  })
+
+  export const thunkCreateSpotImage = (spotId, data) => async (dispatch) => {
+    console.log('thunk test',data)
+    try {const response = await csrfFetch(`/api/spots/${spotId}/images`,{
+      method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({url:`${data}`,preview:`true`}),
+    });
+
+    // console.log('response',response)
+    if(response.ok){
+      const images = await response.json()
+      dispatch(actionCreateSpotImage(images))
+    }
+    }catch (error){
+      const errors = await error.json();
+      return errors;
+    }
+  }
 
   export const thunkGetCurrentSpots = (spots) => async (dispatch) => {
     try {const response = await csrfFetch(`/api/spots/current`);
@@ -148,6 +175,9 @@ export default function spotReducer(state = initialState, action) {
             newState.spot[spot.id]=spot
         }
         return newState
+    }
+    case CREATE_SPOTIMG:{
+      return {...state, spot:action.spot}
     }
     case UPDATE_SPOT:
       return {...state, spot:{[action.spots.id]: action.spots }};

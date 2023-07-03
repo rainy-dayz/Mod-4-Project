@@ -19,10 +19,11 @@ const spot = useSelector((state) =>{
     // console.log('state', state)
     return state.spots.spot[spotId]
 })
+console.log('spot for update',spot)
 // const spot = Object.values(spotObj)[0][0]
     // if(!Object.values(spot).length) {return null}
 // const spotArr = Object.values(spot)
-  console.log('spot stuff',spot)
+  // console.log('spot stuff',spot)
 
   if (!spot) return <>No Spot Found </>;
 
@@ -30,7 +31,7 @@ const spot = useSelector((state) =>{
   return (
     <>
 <SpotsForm spot={spot} formType="Update Spot" />
-<h2>hello world</h2>
+
 
     </>
   );

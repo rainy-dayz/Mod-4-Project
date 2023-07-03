@@ -1,0 +1,23 @@
+label{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    margin:10px;
+}
+form{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-around;
+}
+.cityState{
+    display:flex;
+
+}
+.latLng{
+    display:flex;
+}

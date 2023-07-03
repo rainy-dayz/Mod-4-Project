@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createSpot,updateSpot} from "../../store/spots";
+import { createSpot,thunkCreateSpotImage,updateSpot} from "../../store/spots";
+import './spotForm.css'
+
 // import { useSelector } from "react-redux";
-const SpotsForm = ({ spot, formType }) => {
+const SpotsForm = ({ spot, formType,  }) => {
 const [address, setAddress] = useState(spot.address)
 const [city, setCity] = useState(spot.city)
 const [state, setState] = useState(spot.state)
@@ -16,20 +18,26 @@ const [price, setPrice]= useState(spot.price)
 const [error, setErrors] = useState({});
 const dispatch = useDispatch();
 const history = useHistory();
+const [previewImage,setPreviewImage] = useState('')
+// console.log('previewImage',spot.SpotImages[0])
 
 const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({});
-    spot = { ...spot, address, city, state,country, lat,lng,name,description, price };
-    if (formType === "Update Spot") {
-          spot = await dispatch(updateSpot(spot));
-          console.log('update spot',spot)
+  e.preventDefault();
+  setErrors({});
+  spot = { ...spot, address, city, state,country, lat,lng,name,description, price};
+  if (formType === "Update Spot") {
+    spot = await dispatch(updateSpot(spot));
+    console.log('create image',previewImage)
+    let image = await dispatch (thunkCreateSpotImage(spot.id, previewImage))
+    // console.log('update spot',spot)
 
         } else if (formType === "Create Spot") {
+          console.log('test')
             spot = await dispatch(createSpot(spot));
-            console.log('create spot',spot)
+            let image = await dispatch (thunkCreateSpotImage(spot.id, previewImage))
+            // setUrl(image.url)
 
-    }
+          }
 
     if (spot.error) {
       const err = setErrors(spot.error);
@@ -37,16 +45,16 @@ const handleSubmit = async (e) => {
     }else {
         history.push(`/spots/${spot.id}`)
     }
-    setAddress('')
-    setCity('')
-    setState('')
-    setCountry('')
-    setLat('')
-    setLng('')
-    setName('')
-    setDescription('')
-    setPrice('')
-
+    // setAddress('')
+    // setCity('')
+    // setState('')
+    // setCountry('')
+    // setLat('')
+    // setLng('')
+    // setName('')
+    // setDescription('')
+    // setPrice('')
+    // s
     // else {
     //     history.push(`/spots/${spot.id}`);
     //   }
@@ -56,20 +64,34 @@ const handleSubmit = async (e) => {
 //     console.log(state)
 //     return state})
 return (
-    <form onSubmit={handleSubmit}>
+    <form className = "form" onSubmit={handleSubmit}>
       <h2>{formType}</h2>
-      <div className="errors">{error.address}</div>
+      <div className="errors">{error.country}</div>
+      <div >
       <label>
-        Address:
+        Country
+        <input
+          type="text"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+        />
+      </label>
+      </div>
+      <div className="errors">{error.address}</div>
+      <div>
+      <label>
+        Street Address
         <input
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
       </label>
+      </div>
       <div className="errors">{error.city}</div>
+      <div className="cityState">
       <label>
-        City:
+        City
         <input
           type="text"
           value={city}
@@ -78,25 +100,18 @@ return (
       </label>
       <div className="errors">{error.state}</div>
       <label>
-        State:
+        State
         <input
           type="text"
           value={state}
           onChange={(e) => setState(e.target.value)}
         />
       </label>
-      <div className="errors">{error.country}</div>
-      <label>
-        Country:
-        <input
-          type="text"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        />
-      </label>
+       </div>
       <div className="errors">{error.lat}</div>
+      <div className="latLng">
       <label>
-        Lat:
+        Latitude
         <input
           type="number"
           value={lat}
@@ -105,23 +120,16 @@ return (
       </label>
       <div className="errors">{error.lng}</div>
       <label>
-        Lng:
+        Longitude
         <input
           type="number"
           value={lng}
           onChange={(e) => setLng(e.target.value)}
         />
       </label>
-      <div className="errors">{error.name}</div>
-      <label>
-        Name:
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </label>
+       </div>
       <div className="errors">{error.description}</div>
+      <div>
       <label>
         Description:
         <input
@@ -130,7 +138,20 @@ return (
           onChange={(e) => setDescription(e.target.value)}
         />
       </label>
+       </div>
+      <div className="errors">{error.name}</div>
+      <div>
+      <label>
+        Name:
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </label>
+       </div>
       <div className="errors">{error.price}</div>
+      <div>
       <label>
         Price:
         <input
@@ -139,6 +160,17 @@ return (
           onChange={(e) => setPrice(e.target.value)}
         />
       </label>
+       </div>
+       <div>
+      <label>
+        Image Url:
+        <input
+          type="text"
+          value={previewImage}
+          onChange={(e) => setPreviewImage(e.target.value)}
+        />
+      </label>
+       </div>
       <button type="submit">{formType}</button>
 
     </form>

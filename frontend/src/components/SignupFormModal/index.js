@@ -40,7 +40,10 @@ function SignupFormModal() {
       confirmPassword: "Confirm Password field must be the same as the Password field"
     });
   };
-
+  let disable=true
+  if(username.length >3 && password.length >5 && email.length && lastName.length && confirmPassword.length ){
+    disable =false
+  }
   return (
     <>
       <h1>Sign Up</h1>
@@ -107,7 +110,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={disable}>Sign Up</button>
       </form>
     </>
   );

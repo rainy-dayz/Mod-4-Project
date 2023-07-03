@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf"
 const READ_REVIEWS = "reviews/READ_ALL_REVIEWS"
 const RECIEVE_SPOT_REVIEWS = "spots/RECIEVE_SPOT_REVIEWS"
 const CREATE_REVIEW = "spots/CREATE_REVIEWS"
+const DELETE_REVIEW = "reviews/DELETE_REVIEW"
 
 //actions
 const actionReadReviews = (reviews) => ({
@@ -14,9 +15,14 @@ const actionReadReviews = (reviews) => ({
     spots
   })
 
-  const actionCreateReview = (spots) => ({
+  const actionCreateReview = (review) => ({
     type:CREATE_REVIEW,
-    spots
+    review
+  })
+
+  const actionDeleteReview = (reviewId) =>({
+    type:DELETE_REVIEW,
+    reviewId
   })
 
   // thunks
@@ -46,6 +52,44 @@ const actionReadReviews = (reviews) => ({
      }
    }
 
+   export const thunkCreateReview = (spotId,data) => async (dispatch) => {
+    try{
+        const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        // console.log('hell',response)
+        if(response.ok){
+            const review = await response.json();
+            dispatch(actionCreateReview(review));
+            return review;
+        }
+        }catch (error) {
+            const errors = await error.json()
+            // console.log('errors',errors)
+            return errors
+        }
+   }
+
+//    /api/reviews/:reviewId
+export const deleteReview = (reviewId) => async dispatch => {
+    try {const response = await csrfFetch(`/api/reviews/${reviewId}`,{
+        method:'DELETE'
+    });
+
+    if (response.ok) {
+        dispatch(actionDeleteReview(reviewId));
+    }
+    }catch (error){
+        const errors = await error.json()
+        // console.log('errors',errors)
+        return errors
+    }
+  };
 
 const initialState = {
     users :{},
@@ -55,10 +99,22 @@ const initialState = {
 export default function reviewReducer(state = initialState, action) {
   switch (action.type) {
     case READ_REVIEWS: {
-        return {...state, users:{...action.reviews.Reviews}}
+        return {...state, spot:{...action.reviews.Reviews}}
         }
         case RECIEVE_SPOT_REVIEWS:{
             return {...state, spot:{...action.spots.Reviews}}
+        }
+        case CREATE_REVIEW:{
+            return { ...state, spot:{[action.review.id]: action.review }};
+        }
+        case DELETE_REVIEW:{
+            const newState= {...state.newState}
+            delete newState[action.reviewId]
+            return {newState, spot:{}}
+
+            // const allSpots = {...state.allSpots}
+            // delete allSpots[action.spotId]
+            // return {allSpots, spot:{} }
         }
     default:
         return state;
