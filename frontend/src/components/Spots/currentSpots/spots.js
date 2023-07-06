@@ -10,6 +10,7 @@ function Spots() {
     const history = useHistory()
 
 
+
     useEffect(() => {
         dispatch(getSpots());
     }, [dispatch]);
@@ -26,18 +27,18 @@ function Spots() {
         {/* <Link to = '/spots/:spotId/edit'>Edit a Spot</Link> */}
         <div className="cards">
         {spots.map((spot) => {
-          console.log('SPOTSSSSS',spot)
+          // console.log('SPOTSSSSS',spot)
           return (
             <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>
             {/* <Link to={`/spots/${spot.id}`}> */}
               {/* {spot.address} {spot.name} */}
               {/* <div class="tooltip">Hover over me */}
               <span className="tooltiptext">{spot.name}</span>
-              <img className='pics'src={spot.previewImage} />
-              <i className="fa-regular fa-star"></i>
+              <img className='pics'src={spot.previewImage? `${spot.previewImage}`: "https://cdn.pixabay.com/photo/2016/05/31/10/52/not-yet-1426593_1280.png"} />
+
               <div className="top">
               <p>{`${spot.city}, ${spot.state}`}</p>
-              <p>{`${spot.avgRating}`}</p>
+              <p><span><i class="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating.toFixed(1)}`: "New"}</p>
               </div>
               <p>{`$${spot.price} per night`}</p>
               </div>

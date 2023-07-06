@@ -6,6 +6,10 @@ import { thunkGetSpotReviews } from "../../store/review";
 // import { deleteSpot } from "../../store/spots";
 import { deleteReview } from '../../store/review';
 import { useHistory } from "react-router-dom";
+import DeleteReviewModal from "../Modals/deleteReviewModal";
+import SingleReview from "../Spots/currentSpots/singleReview";
+
+
 
 
 
@@ -15,54 +19,44 @@ const SpotReview = () => {
   const [errors, setErrors] = useState()
   const {reviewId} = useParams()
   const history = useHistory()
-
+  const users= useSelector(state => state.session.user)
+  const [openModal,setOpenModal] = useState(false)
 
   // const handleDelete = (e) => {
   //   e.preventDefault();
   //   dispatch(deleteReview(reviewId));
   // };
 
+  const spotReviews = useSelector((state) =>{
+    return state.reviews.spot
+  })
+  console.log('state', spotReviews)
   useEffect(() => {
     const error = async() => {
         const error = await dispatch(thunkGetSpotReviews(spotId));
         setErrors(error)
     }
     error()
-}, [dispatch, spotId]);
+}, [dispatch]);
 
-const spotReview =Object.values(useSelector((state) =>{
-    // console.log('state', state)
-    return state.reviews.spot
-}))
 // const spot = Object.values(spotObj)[0][0]
-    if(!Object.values(spotReview).length) {return <></> }
-// const spotArr = Object.values(spot)
-//   console.log('spot stuff',spot)
+const spotArr = Object.values(spotReviews)
+// const spotArr1 = Object.values(spotArr)
+console.log('spot stuff',spotArr)
 
-//   if (!spotReview.id) {return <>Spot does not exist</>};
-// if (spot.error) {
-//     const err = setErrors(spot.error);
-//     console.log(err)
-//   }
-// if(!spot || !spot.id) return null
+// if(!Object.values(spotReview).length) {return null}
+// if(!spotArr.length){return null}
+if(Object.values(spotArr).length<1){return null}
   return (
-    <>{spotReview.map((r) => {
-        return (
-            <>
-          <h2>{r.review}</h2>
-          <h2>{r.spotId}</h2>
-    <button onClick={(e) => {
-      e.preventDefault()
-      return dispatch(deleteReview(r.id))
-    }}
-      >
-            Delete a Review
-          </button>
-          </>
-        )
+    <>
+     {/* <h3><span><i class="fa-solid fa-star"></i></span>{spotArr.length === 1 ? ` ${spotArr.avgStarRating}·${spotArr.numReviews} review`: spotArr.length === 0 ? "New" :` ${spotArr.avgStarRating} · ${spotArr.numReviews} reviews` }</h3> */}
 
-        })}
-    <h1>ch</h1>
+     {spotArr.toReversed().map((r) =>{
+      return( <>
+      {console.log('roger',r)}
+        <SingleReview r={r} /> </>)
+     })}
+
     </>
   );
 };

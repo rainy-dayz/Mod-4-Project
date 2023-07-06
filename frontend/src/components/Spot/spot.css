@@ -1,0 +1,72 @@
+.currentBox{
+    display:flex;
+    flex-direction: column;
+    /* flex-wrap:wrap; */
+}
+
+.sideImg{
+    width:248px;
+    height:248px;
+/* flex-wrap:wrap; */
+    /* object-fit:cover; */
+}
+.mainImg{
+    width:500px;
+    height:500px;
+    /* object-fit:cover; */
+}
+.box-smallImg{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:3px;
+}
+.allimages-box{
+    display:flex;
+    flex-direction: row;
+    gap:5px;
+
+
+}
+.reserve{
+    background:red;
+    color:white;
+    width:fit-content;
+    padding:15px 140px;
+}
+.top-row-reserve{
+    display:flex;
+    /* gap:80px; */
+    justify-content: space-between;
+    align-items:center;
+}
+.reserve-box{
+    border:2px solid Black;
+    width:fit-content;
+    /* width:200px;
+    height:125px; */
+    border-radius: 3%;
+    padding:10px;
+}
+
+.info-book{
+    display:flex;
+    justify-content:space-between;
+    border-bottom: 2px solid grey;
+    padding:20px;
+}
+
+
+@media(max-width: 1020px) {
+
+    .allimages-box{
+        display:flex;
+    flex-wrap:wrap;
+    flex-direction:column;
+    }
+
+}
+
+.create-review-btn{
+    
+}

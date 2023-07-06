@@ -1,4 +1,5 @@
 import ReviewForm from "./reviewForm";
+// import CreateReviewModal from "../Modals/createReviewModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -17,6 +18,10 @@ const CreateReviewForm = () => {
       reviews={reviews}
       formType="Create Review"
     />
+    // <CreateReviewModal
+    //   reviews={reviews}
+    //   formType="Create Review"
+    // />
   );
 };
 

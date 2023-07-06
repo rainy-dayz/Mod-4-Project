@@ -6,6 +6,7 @@ const DELETE_SPOT = "spots/DELETE_SPOT"
 const UPDATE_SPOT = "spots/UPDATE_SPOT"
 const RECIEVE_SPOT = "spots/RECIEVE_SPOT"
 const CREATE_SPOTIMG = "spots/CREATE_SPOTIMG"
+const UPDATE_SPOTIMG= "spots/UPDATE_SPOTIMG"
 
 
 
@@ -40,6 +41,8 @@ const actionReadSpot = (spots) => ({
     spot
   })
 
+
+
   export const thunkCreateSpotImage = (spotId, data) => async (dispatch) => {
     console.log('thunk test',data)
     try {const response = await csrfFetch(`/api/spots/${spotId}/images`,{
@@ -47,7 +50,7 @@ const actionReadSpot = (spots) => ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({url:`${data}`,preview:`true`}),
+          body: JSON.stringify({url:data,preview:`true`}),
     });
 
     // console.log('response',response)
@@ -188,6 +191,12 @@ export default function spotReducer(state = initialState, action) {
     const allSpots = {...state.allSpots}
     delete allSpots[action.spotId]
     return {allSpots, spot:{} }
+
+    // const newState= {...state, spot:{...state.spot}}
+    //         delete newState.spot[action.reviewId]
+    //         console.log('this is my newState', newState)
+    //         console.log('this is my action', action)
+    //         return newState
     default:
       return state;
   }

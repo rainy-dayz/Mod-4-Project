@@ -5,6 +5,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SpotReview from "../Review/reviewForSpot";
 import { thunkGetSpot, deleteSpot } from "../../store/spots";
+import './spot.css'
+import { useHistory } from "react-router-dom";
+// import CreateReviewModal from "../Modals/createReviewModal";
+import ReviewForm from "../Forms/reviewForm";
+import { thunkGetSpotReviews } from "../../store/review";
+
 
 
 
@@ -12,10 +18,17 @@ const SpotInfo = () => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState()
+  const {user} =useState()
+  const history= useHistory()
+  const [openModal,setOpenModal] = useState(false)
+  const users= useSelector(state => state.session.user)
+  const reviews= useSelector(state => state.reviews.spot)
 
-  const handleDelete = (e) => {
+  // const [length,setLength] = useState(Object.values(reviews.length))
+
+  const handleDelete = async (e) => {
     e.preventDefault();
-    dispatch(deleteSpot(spotId));
+    await dispatch(deleteSpot(spotId));
   };
 
   useEffect(() => {
@@ -23,39 +36,79 @@ const SpotInfo = () => {
         const error = await dispatch(thunkGetSpot(spotId));
         setErrors(error)
     }
+    // const spotRev= async() =>{
+    //   const spotRev1=await dispatch(thunkGetSpotReviews(spotId))
+    //   console.log('spotRev',spotRev1)
+    // }
+    // spotRev()
     error()
 }, [dispatch, spotId]);
-
-const spot = useSelector((state) =>{
-    // console.log('state', state)
-    return state.spots.spot[spotId]
-})
+// console.log('reviews',reviews)
+const spot = useSelector((state) =>state.spots.spot[spotId])
 // const spot = Object.values(spotObj)[0][0]
-    // if(!Object.values(spot).length) {return null}
+// if(!Object.values(spot).length) {return null}
 // const spotArr = Object.values(spot)
-  console.log('spot stuff',spot)
+// console.log('spot stuff',spot)
 
-  if (!spot) return <></>;
+if (!spot) return <></>;
 // if (spot.error) {
-//     const err = setErrors(spot.error);
-//     console.log(err)
-//   }
-if(!spot || !spot.id) return null
+  //     const err = setErrors(spot.error);
+  //     console.log(err)
+  //   }
+  if(!spot || !spot.id) return null
+  if(spot.SpotImages === undefined) {return <></>}
+  let endArray= spot.SpotImages.slice(1)
+  // const user= useSelector(state =>{
+  //   return state.session.user
+  // })
+  // console.log('session',state.session.user)
+  // if(sessionStorage.user)
+  const message = () => {
+   return "Feature coming soon"
+  }
   return (
-    <>
-    <p>{spot.name}</p>
-    <p>{spot.address}</p>
-    <p>{spot.city}</p>
-    <p>{spot.state}</p>
+    <div className="currentBox">
+      {/* <h2>{users.firstName}</h2> */}
+      {openModal && <ReviewForm closeModal ={setOpenModal}/>}
+    <h2>{spot.name}</h2>
+    <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
+    <div className="allimages-box">
+    <img className="mainImg" src ={spot.SpotImages[0].url? `${spot.SpotImages[0].url}`: "https://cdn.pixabay.com/photo/2016/05/31/10/52/not-yet-1426593_1280.png"} />
+    <div className="box-smallImg">
+    {endArray.map(spot =>{
+      return(
+        <img className = "sideImg"src={spot.url? `${spot.url}`: "https://cdn.pixabay.com/photo/2016/05/31/10/52/not-yet-1426593_1280.png"} />
+        // src={ele.previewImage?`${ele.previewImage}`: "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"}
+        )
+      })}
+      </div>
+     </div>
+     <div className="info-book">
+     <div className="info-spot">
+     <p>{`Hosted by ${spot.Owner.firstName}, ${spot.Owner.lastName}`}</p>
     <p>{spot.description}</p>
-    <p>{spot.price}</p>
+     </div>
+     <div>
+    <div className = "reserve-box">
+      <div className="top-row-reserve">
+    <h3>{`$${spot.price} night`}</h3>
+    <h5><span><i class="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h5>
+    </div>
+    <button onClick={()=>alert("Feature Coming Soon")} className="reserve">Reserve</button>
+    </div>
+     </div>
+     </div>
+     <h3><span><i class="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}·${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h3>
     {/* <Link to={`/spots/${spotId}/reviews`}>Reviews</Link> */}
-    <Link to={`/spots/${spotId}/review`}>Create Review</Link>
+    {/* <Link to={`/spots/${spotId}/review`}>Create Review</Link> */}
+    {/* <div>{spots.session.user.firstName}</div> */}
     <SpotReview spotId={spotId} />
-    <button onClick={handleDelete}>
-            Delete
+    {/* {users ? users.id !== spot.ownerId? */}
+    <button  onClick={()=>setOpenModal(true)}>
+            Create A Review
           </button>
-    </>
+       {/* } */}
+    </div>
   );
 };
 

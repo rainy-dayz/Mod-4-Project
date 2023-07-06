@@ -14,8 +14,8 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
   if (lng >180 || lng <-180 || lng ==="") error.lng = "Longitude is not valid";
   if (!name) error.name = "Name is required";
   if (!name || name.length > 50) error.name = "Name must be less than 50 characters";
-  if (!description) error.description = "Description is required";
-  if (!price) error.price = "Price per day is required";
+  if (!description) error.description = "Description needs a minimum of 30 characters";
+  if (!price) error.price = "Price is required";
 
 
   if (Object.keys(error).length > 0) {
@@ -41,7 +41,8 @@ let isSpot= (spot)=>{
     }
     delete spot.Reviews;
     delete spot.SpotImages;
-    spot.avgRating = Math.round(avgRating*100)/100;
+    // spot.avgRating = Math.round(avgRating*100)/100;
+    spot.avgRating = avgRating
     answer.push(spot);
   });
   return answer
@@ -104,6 +105,7 @@ router.get('/:spotId/bookings', requireAuth,async(req, res) => {
 
 
 router.get("/:spotId/reviews", requireAuth,async (req, res) => {
+  console.log('reqbody', req.params.spotId)
   let spot = await Spot.findByPk(req.params.spotId, {
     attributes: [],
     include: [
@@ -122,9 +124,11 @@ router.get("/:spotId/reviews", requireAuth,async (req, res) => {
     ],
   });
   if (!spot) {
-    res.status(404).json({ message: "Spot couldn't be found" });
+    return res.status(404).json({ message: "Spot couldn't be found" });
   }
-  res.json(spot);
+  // console.log(spot)
+  return res.json(spot);
+
 });
 
 router.get("/:spotId", async (req, res) => {
@@ -146,7 +150,8 @@ router.get("/:spotId", async (req, res) => {
     let place = spot.toJSON();
     delete place.Reviews;
     place.numReviews = count.length;
-    place.avgStarRating = Math.round(avgRating*100)/100;
+    // place.avgStarRating = Math.round(avgRating*100)/100;
+    place.avgStarRating = avgRating
     answer.push(place);
     res.json(answer);
   } else {
@@ -199,6 +204,8 @@ if(Object.keys(errors).length){
 })
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
+  console.log('req body', req.body)
+  console.log('params id',req.params.spotId)
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) {
     res.status(404);
@@ -208,7 +215,9 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   }
   const { url, preview } = req.body;
 
-  if(url === "") res.status(400).json({message:'please provide a url'})
+
+  if(url === "") res.status(400).json({message:'Preview image is required'})
+  // if(!url.includes(".png" || ".jpg" || ".jpeg")) res.status(400).json({message:'image URL needs to end in png or jpg (or jpeg) '})
   if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"To add an image you must own this spot"})
   const newImage = await spot.createSpotImage({
     url,
@@ -234,7 +243,7 @@ const validateReview = (review, stars) => {
 };
 
 router.post("/:spotId/reviews", requireAuth, async (req, res) => {
-  const { review, stars, userId } = req.body;
+  const { review, stars } = req.body;
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) {
     res.status(404);
@@ -254,7 +263,7 @@ router.post("/:spotId/reviews", requireAuth, async (req, res) => {
     return review.userId ===req.user.dataValues.id && spot.id === review.spotId
   })
   if (reviewAuth) {
-    return res.status(500).json({
+    return res.status(404).json({
       message: "User already has a review for this spot",
     });
   }

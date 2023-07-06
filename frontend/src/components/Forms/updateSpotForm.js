@@ -19,7 +19,8 @@ const spot = useSelector((state) =>{
     // console.log('state', state)
     return state.spots.spot[spotId]
 })
-console.log('spot for update',spot)
+// let spotArr= Object.values(spot.SpotImages)
+// console.log('spot for update',spot)
 // const spot = Object.values(spotObj)[0][0]
     // if(!Object.values(spot).length) {return null}
 // const spotArr = Object.values(spot)
