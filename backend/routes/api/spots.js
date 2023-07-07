@@ -202,14 +202,7 @@ if(Object.keys(errors).length){
 }
 })
 
-// const validatePreviewImage = (url) => {
-//   let error = {};
-//   if (url === "") error.previewImage = "PreviewImage is required";
-//   // if(!url.endsWith('.jpg') && !url.endsWith('.jpeg') && !url.endsWith('.png')) error.previewImage = "image URL needs to end in png, jpg, jpeg"
-//   if (Object.keys(error).length > 0) {
-//     return error;
-//   }
-// };
+
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
@@ -220,14 +213,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     });
   }
   const { url, preview } = req.body;
-  // let error = validatePreviewImage(url);
-  // if (error) {
-  //   res.status(400);
-  //   return res.json({ message: "Bad Request", errors: error });
-  // }
-
-  // if(!url) res.status(400).json({message:'Preview image is required'})
-  // if(!url.includes(".png" || ".jpg" || ".jpeg")) res.status(400).json({message:'image URL needs to end in png or jpg (or jpeg) '})
+  
   if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"To add an image you must own this spot"})
   const newImage = await spot.createSpotImage({
     url,

@@ -15,7 +15,7 @@ function Navigation({ isLoaded }){
       <img className = "logo" src="https://www.petticoatparlor.com/prodimages/adventureland%20with%20coaster.jpg"/>
       </div>
       <div className="right-corner">
-      <div ><Link id="create-spot" to = '/spots/new'>Create a New Spot</Link></div>
+      {sessionUser ?<div ><Link id="create-spot" to = '/spots/new'>Create a New Spot</Link></div> : null}
       <div>
       {/* <li className="list-box">
         <NavLink exact to="/">Home</NavLink>

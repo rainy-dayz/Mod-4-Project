@@ -7,6 +7,7 @@ import DeleteModal from '../../Modals/deleteSpotModal';
 const SingleSpot = ({spot, setCount,count }) =>{
     const [openModal,setOpenModal] = useState(false)
     const history = useHistory()
+    
 return (
   <>
 <div className="singleSpotcont">

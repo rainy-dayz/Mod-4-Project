@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createSpot,thunkCreateSpotImage,updateSpot} from "../../store/spots";
 import './spotForm.css'
+
 
 // import { useSelector } from "react-redux";
 const SpotsForm = ({ spot, formType,  }) => {
@@ -15,56 +16,104 @@ const [lng, setLng]= useState(spot.lng)
 const [name, setName]= useState(spot.name)
 const [description, setDescription]= useState(spot.description)
 const [price, setPrice]= useState(spot.price)
-const [error, setErrors] = useState({});
+const [errors, setErrors] = useState({});
 const dispatch = useDispatch();
 const history = useHistory();
 const [previewImage,setPreviewImage] = useState('')
 const [previewImageErrors, setPreviewImageErrors] = useState({})
 const [previewImageErrors2, setPreviewImageErrors2] = useState({})
 const [previewImage2,setPreviewImage2] = useState('')
-// const [previewImage3,setPreviewImage3] = useState('')
+const [hasSubmitted, setHasSubmitted] = useState(false)
 // const [previewImage4,setPreviewImage4] = useState('')
 // const [previewImage5,setPreviewImage5] = useState('')
+console.log('this is error',errors)
+// useEffect(()=>{
+// const errors = {}
+// if(previewImage.length === 0) errors.previewImage = 'Preview image is required'
+// if(!previewImage.endsWith('.jpg'))
+// setErrors(errors)
+// },[previewImage,previewImage2])
+let disabled = true
+useEffect(()=>{
+  let errors = {};
+  setErrors({});
+  if(!address) {errors.address = "Must have a valid address"}
+  if(!city) {errors.city = "Must have a valid city"}
+  if(!state) {errors.state = "Must have a valid state"}
+  if(!country) {errors.country = "Must have a valid country"}
+  if(!name) {errors.name = "Must have a valid name"}
+  if(!description || description.length<30){errors.description = "Must have a valid description"}
+  if(price < 1) {errors.price = "Must have a valid price"}
+  if(formType === "Create Spot"){
+   if(!previewImage) {errors.previewImage = "Must have a valid url"}
+  }
+  // if(hasSubmitted){
 
+    setErrors(errors);
+  // }
+},[address, city, state, country, name, description, price, previewImage]);
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+// setHasSubmitted(true)
+  // if(Object.values(error).length)return
+
   setErrors({});
-  spot = { ...spot, address, city, state,country, lat,lng,name,description, price,previewImage};
+  spot = { ...spot, address, city, state,country, lat,lng,name,description, price};
   if (formType === "Update Spot") {
     spot = await dispatch(updateSpot(spot));
         } else if (formType === "Create Spot") {
             spot = await dispatch(createSpot(spot));
-            if(previewImage){
               await dispatch (thunkCreateSpotImage(spot.id, previewImage))
-            }else{
-              setPreviewImageErrors({previewImage:'Preview image is required'})
-            }
 
 
-            if(previewImage2.includes('.jpg') || previewImage2.includes('.jpeg') || previewImage2.includes('.png')){
-              dispatch (thunkCreateSpotImage(spot.id, previewImage2))
-            }else{
-              setPreviewImageErrors2({previewImage2:'Image must include .png, .jpg, .jpeg'})
-            }
+            // if (spot.error) {
+            //   return setErrors(spot.error)
+            // }
+
+            //   // console.log('image',image)
+            //   if(image.errors === undefined)return null
+            //   if (image.errors) {
+            //     console.log('made it here ')
+            //     return setErrors(image.errors)
+            //   }
+            // }else{
+            //   setPreviewImageErrors({previewImage:'Preview image is required'})
+            // }
+
+
+            // if(previewImage2.includes('.jpg') || previewImage2.includes('.jpeg') || previewImage2.includes('.png')){
+            //   dispatch (thunkCreateSpotImage(spot.id, previewImage2))
+            // }else{
+            //   setPreviewImageErrors2({previewImage2:'Image must include .png, .jpg, .jpeg'})
+            // }
             //  dispatch (thunkCreateSpotImage(spot.id, previewImage3))
             //  dispatch (thunkCreateSpotImage(spot.id, previewImage4))
             //  dispatch (thunkCreateSpotImage(spot.id, previewImage5))
             // setUrl(image.url)
           // if(image.error) setErrors(image.error)
+          // if(image === undefined)return null
           }
-    if (spot.error) {
-      setErrors(spot.error);
-    }else {
+
+    // if (spot.error) {
+    //   setErrors(spot.error)
+      // setPreviewImageErrors(previewImage.previewImageErrors)
+    // }else {
         history.push(`/spots/${spot.id}`)
-    }
+
+    // }
     // else {
-    //     history.push(`/spots/${spot.id}`);
+        // history.push(`/spots/${spot.id}`);
     //   }
   };
+  // let disable=true
+  // if(previewImage!==""){
+  //   disable=false
+  // }
 //   if (!formType === "Update Spot")
 //   const spots =useSelector(state => {
 //     return state})
+// if(image.errors === undefined)return null
 return (
     <form className = "form" onSubmit={handleSubmit}>
       <h2>{formType}</h2>
@@ -75,7 +124,7 @@ return (
       </div>
       <div >
       <label>
-        Country <div className="errors">{error.country}</div>
+        Country <div className="errors">{errors.country}</div>
         <input
           type="text"
           size="50"
@@ -88,7 +137,7 @@ return (
       <div>
       <label>
         Street Address
-      <div className="errors">{error.address}</div>
+      <div className="errors">{errors.address}</div>
         <input
           type="text"
           size="50"
@@ -100,7 +149,7 @@ return (
       </div>
       <div className="latLng">
       <label>City
-        <div className="errors">{error.city}</div>
+        <div className="errors">{errors.city}</div>
         <input
           type="text"
           size="22"
@@ -110,7 +159,7 @@ return (
         />
         </label>
       <label>State
-      <div className="errors">{error.state}</div>
+      <div className="errors">{errors.state}</div>
         <input
           type="text"
           size="22"
@@ -123,7 +172,7 @@ return (
       <div className="latLng">
       <label>
         Latitude
-      <div className="errors">{error.lat}</div>
+      <div className="errors">{errors.lat}</div>
         <input
           type="number"
           // min="-90" max="90"
@@ -135,7 +184,7 @@ return (
       </label>
       <label>
         Longitude
-      <div className="errors">{error.lng}</div>
+      <div className="errors">{errors.lng}</div>
         <input
           type="number"
           // min="-180" max="180"
@@ -160,7 +209,7 @@ return (
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-      <div className="errors">{error.description}</div>
+      <div className="errors">{errors.description}</div>
       </label>
        </div>
       <div className = "address-info">
@@ -176,7 +225,7 @@ return (
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-      <div className="errors">{error.name}</div>
+      <div className="errors">{errors.name}</div>
       </label>
        </div>
       <div className = "address-info">
@@ -196,10 +245,11 @@ return (
           onChange={(e) => setPrice(e.target.value)}
         />
         </div>
+      <div className="errors">{errors.price}</div>
         </div>
-      <div className="errors">{error.price}</div>
       </label>
        </div>
+       {formType==="Create Spot" ?
        <div className="address-info">
        <div>
       <label>
@@ -214,7 +264,7 @@ return (
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
         />
-       <div className="errors">{previewImageErrors.previewImage}</div>
+       <div className="errors">{errors.previewImage}</div>
       </label>
        </div>
        <div>
@@ -226,7 +276,7 @@ return (
           // value={previewImage2}
           // onChange={(e) => setPreviewImage2(e.target.value)}
         />
-      <div className="errors">{previewImageErrors2.previewImage2}</div>
+      {/* <div className="errors">{previewImageErrors2.previewImage2}</div> */}
       </label>
        </div>
        <div>
@@ -263,8 +313,9 @@ return (
       </label>
        </div>
        </div>
+       :null}
        <div className="btn-cont">
-      <button type="submit">{formType}</button>
+      <button disabled={Object.values(errors).length}type="submit">{formType}</button>
       </div>
 
     </form>
