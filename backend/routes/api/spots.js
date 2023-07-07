@@ -14,7 +14,7 @@ const validateSpot = (address,city,state,country,lat,lng,name, description, pric
   if (lng >180 || lng <-180 || lng ==="") error.lng = "Longitude is not valid";
   if (!name) error.name = "Name is required";
   if (!name || name.length > 50) error.name = "Name must be less than 50 characters";
-  if (!description) error.description = "Description needs a minimum of 30 characters";
+  if (!description || description.length<30) error.description = "Description needs a minimum of 30 characters";
   if (!price) error.price = "Price is required";
 
 
@@ -202,6 +202,15 @@ if(Object.keys(errors).length){
 }
 })
 
+// const validatePreviewImage = (url) => {
+//   let error = {};
+//   if (url === "") error.previewImage = "PreviewImage is required";
+//   // if(!url.endsWith('.jpg') && !url.endsWith('.jpeg') && !url.endsWith('.png')) error.previewImage = "image URL needs to end in png, jpg, jpeg"
+//   if (Object.keys(error).length > 0) {
+//     return error;
+//   }
+// };
+
 router.post("/:spotId/images", requireAuth, async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) {
@@ -211,9 +220,13 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     });
   }
   const { url, preview } = req.body;
+  // let error = validatePreviewImage(url);
+  // if (error) {
+  //   res.status(400);
+  //   return res.json({ message: "Bad Request", errors: error });
+  // }
 
-
-  if(url === "") res.status(400).json({message:'Preview image is required'})
+  // if(!url) res.status(400).json({message:'Preview image is required'})
   // if(!url.includes(".png" || ".jpg" || ".jpeg")) res.status(400).json({message:'image URL needs to end in png or jpg (or jpeg) '})
   if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"To add an image you must own this spot"})
   const newImage = await spot.createSpotImage({
