@@ -19,7 +19,7 @@ module.exports = {
       },
       {
         spotId:1,
-        url:'http://www.destination360.com/north-america/us/california/disneyland/images/s/disneyland-california-adventure.jpg',
+        url:'https://s1.1zoom.me/b4952/174/USA_Disneyland_Parks_Houses_California_Anaheim_520756_3840x2400.jpg',
         preview:false
       },
       {
