@@ -19,7 +19,7 @@ module.exports = {
       },
       {
         spotId:1,
-        url:'https://s1.1zoom.me/b4952/174/USA_Disneyland_Parks_Houses_California_Anaheim_520756_3840x2400.jpg',
+        url:'https://1.bp.blogspot.com/-8w5yjNv4T-0/TtpvG98FIoI/AAAAAAAAFhM/vAiOJP8amXg/s1600/Amazing+Disneyland+Photos3.jpg',
         preview:false
       },
       {
