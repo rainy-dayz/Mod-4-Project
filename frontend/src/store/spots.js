@@ -7,7 +7,7 @@ const UPDATE_SPOT = "spots/UPDATE_SPOT"
 const RECIEVE_SPOT = "spots/RECIEVE_SPOT"
 const CREATE_SPOTIMG = "spots/CREATE_SPOTIMG"
 const UPDATE_SPOTIMG= "spots/UPDATE_SPOTIMG"
-
+const GET_CURRENT="spots/GET_CURRENT"
 
 
 const actionReadSpot = (spots) => ({
@@ -15,6 +15,10 @@ const actionReadSpot = (spots) => ({
     spots
   })
 
+  const actionGetCurrent = (spots) => ({
+    type: GET_CURRENT,
+    spots
+  })
 
   const actionDeleteSpot = (spotId) =>({
     type:DELETE_SPOT,
@@ -44,7 +48,7 @@ const actionReadSpot = (spots) => ({
 
 
   export const thunkCreateSpotImage = (spotId, data) => async (dispatch) => {
-    console.log('thunk test',data)
+
     try {const response = await csrfFetch(`/api/spots/${spotId}/images`,{
       method: "POST",
           headers: {
@@ -53,7 +57,7 @@ const actionReadSpot = (spots) => ({
           body: JSON.stringify({url:data,preview:`true`}),
     });
 
-    // console.log('response',response)
+
     if(response.ok){
       const images = await response.json()
       dispatch(actionCreateSpotImage(images))
@@ -69,7 +73,7 @@ const actionReadSpot = (spots) => ({
 
     if(response.ok){
       const spots = await response.json()
-      dispatch(actionReadSpot(spots))
+      dispatch(actionGetCurrent(spots))
     }
     }catch (error){
       const errors = await error.json();
@@ -78,16 +82,16 @@ const actionReadSpot = (spots) => ({
   }
 
   export const thunkGetSpot = (spotId) => async (dispatch) => {
-    try {const response = await csrfFetch(`/api/spots/${spotId}`);
+    const response = await fetch(`/api/spots/${spotId}`);
 
     if(response.ok){
       const spot = await response.json()
       dispatch(actionRecieveSpot(spot))
     }
-    }catch (error){
-      const errors = await error.json();
-      return errors;
-    }
+    // }catch (error){
+    //   const errors = await error.json();
+    //   return errors;
+    // }
   }
 
   export const updateSpot = (spots) => async (dispatch) => {
@@ -127,7 +131,7 @@ const actionReadSpot = (spots) => ({
     }
     }catch (error){
         const errors = await error.json()
-        // console.log('errors',errors)
+
         return errors
     }
   };
@@ -142,7 +146,7 @@ const actionReadSpot = (spots) => ({
       body: JSON.stringify(data),
     });
 
-    // console.log('hell',response)
+
     if(response.ok){
         const spots = await response.json();
         dispatch(actionCreateSpot(spots));
@@ -150,7 +154,7 @@ const actionReadSpot = (spots) => ({
     }
     }catch (error) {
         const errors = await error.json()
-        // console.log('errors',errors)
+
         return errors
     }
 
@@ -169,8 +173,25 @@ export default function spotReducer(state = initialState, action) {
         return { ...state, spot:{[action.spots.id]: action.spots }};
     }
     case READ_SPOTS: {
-    return {...state, allSpots:{...action.spots.Spots}}
+      let newState = {...state}
+      action.spots.Spots.forEach(ele => {
+        newState.allSpots[ele.id]= ele
+      });
+
+      return {...newState}
+      // return newState
+
+
     }
+    case GET_CURRENT:{
+      let newState = {...state, allSpots:{}}
+      action.spots.Spots.forEach(ele => {
+        newState.allSpots[ele.id]= ele
+      });
+
+      return newState
+    }
+    // return {...state, allSpots: {...action.spots.Spots}}
     case RECIEVE_SPOT:{
         // return {...state, ...action.spots}
         let newState = {...state,spot:{}}
@@ -185,17 +206,16 @@ export default function spotReducer(state = initialState, action) {
     case UPDATE_SPOT:
       return {...state, spot:{[action.spots.id]: action.spots }};
       case DELETE_SPOT:
-    //     const newState = { ...state, spot:{} };
-    //   delete newState.allSpots[action.spotId];
-    //   return newState;
-    const allSpots = {...state.allSpots}
-    delete allSpots[action.spotId]
-    return {allSpots, spot:{} }
+        const newState = {...state, allSpots:{...state.allSpots}}
+        delete newState.allSpots[action.spotId]
+        return newState
 
+        //     const newState = { ...state, spot:{} };
+        //   delete newState.allSpots[action.spotId];
+        //   return newState;
     // const newState= {...state, spot:{...state.spot}}
     //         delete newState.spot[action.reviewId]
-    //         console.log('this is my newState', newState)
-    //         console.log('this is my action', action)
+
     //         return newState
     default:
       return state;

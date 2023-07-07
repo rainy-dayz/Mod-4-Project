@@ -42,7 +42,7 @@ const actionReadReviews = (reviews) => ({
   export const thunkGetSpotReviews = (spotId) => async (dispatch) => {
     try{const response = await fetch(`/api/spots/${spotId}/reviews`);
 
-    console.log('spot review thunk', response)
+
      if(response.ok){
        const spotReview = await response.json()
        dispatch(actionRecieveSpotReviews(spotReview))
@@ -63,7 +63,7 @@ const actionReadReviews = (reviews) => ({
           body: JSON.stringify(data),
         });
 
-        // console.log('hell',response)
+
         if(response.ok){
             const review = await response.json();
             review.User=user
@@ -72,7 +72,7 @@ const actionReadReviews = (reviews) => ({
         }
         }catch (error) {
             const errors = await error.json()
-            // console.log('errors',errors)
+
             return errors
         }
    }
@@ -88,7 +88,7 @@ export const deleteReview = (reviewId) => async dispatch => {
     }
     }catch (error){
         const errors = await error.json()
-        // console.log('errors',errors)
+
         return errors
     }
   };
@@ -104,23 +104,27 @@ export default function reviewReducer(state = initialState, action) {
         return {...state, spot:{...action.reviews.Reviews}}
         }
         case RECIEVE_SPOT_REVIEWS:{
-            let newState = {...state,spot:{...state.spot}}
+            let newState = {...state, spot:{...state.spot}}
+
+            newState.spot={}
             action.spots.Reviews.forEach(ele => {
-              console.log('element', ele)
-                newState.spot[ele.id]= ele
+
+              newState.spot[ele.id]= ele
             });
-            console.log('newState', newState)
+
             return {...newState}
         }
         case CREATE_REVIEW:{
-            return { ...state, spot:{[action.review.id]: action.review }};
+          const newState={...state, spot:{...state.spot}}
+          newState.spot[action.review.id]=action.review
+          return newState
+            // return { ...state, spot[action.review.id]: action.review }};
         }
         case DELETE_REVIEW:{
             // const newState= {...state.newState}
             const newState= {...state, spot:{...state.spot}}
             delete newState.spot[action.reviewId]
-            console.log('this is my newState', newState)
-            console.log('this is my action', action)
+
             return newState
         }
     default:

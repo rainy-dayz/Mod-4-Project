@@ -26,3 +26,16 @@
       align-items:center;
       justify-content: center;
     }
+
+    .yes{
+      background:red;
+      color:white;
+      padding:5px;
+      border-radius:7%;
+    }
+.no{
+  background:grey;
+  color:white;
+  padding:5px;
+  border-radius:7%;
+}

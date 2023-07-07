@@ -11,35 +11,34 @@ import SingleSpot from './singleSpot';
 function CurrentSpots() {
     const dispatch = useDispatch()
     const history = useHistory()
-    const [openModal,setOpenModal] = useState(false)
 
     // const handleDelete = (e) => {
-    //   e.preventDefault();
-    //   dispatch(deleteSpot(spotId));
+      //   e.preventDefault();
+      //   dispatch(deleteSpot(spotId));
     // };
 
+
     useEffect(() => {
-        dispatch(thunkGetCurrentSpots());
+      dispatch(thunkGetCurrentSpots());
     }, [dispatch]);
 
     const spots = useSelector(state => {
-        return Object.values(state.spots.allSpots)});
+      return Object.values(state.spots.allSpots)});
+
 
         // if(!spots) {return<Link to = '/spots/new'>Create a New Spot</Link>}
 
-        // if(!Object.values(spots).length) {return}
-        // console.log('SPOTS',spots[0].city)
+
 
     return (
       <main>
         <h1>Manage Spots</h1>
-        <button onClick={() => { history.push(`/spots/new`)}}>Create a New Spot</button>
+        {!spots.length ?<button onClick={() => { history.push(`/spots/new`)}}>Create a New Spot</button>: null}
         {/* <Link to = '/spots/new'>Create a New Spot</Link> */}
         {/* <Link to = '/spots/:spotId/edit'>Edit a Spot</Link> */}
         <div>
         <div className="cards">
         {spots.map((spot) =>
-          // console.log('SPOTSSSSS',spot)
           // return (
           //   <div>
           //   <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>
@@ -67,7 +66,7 @@ function CurrentSpots() {
           // </div>
           // </div>
           // )
-          <SingleSpot spot={spot}/>
+          <SingleSpot spot={spot} />
         )}
         </div>
         </div>

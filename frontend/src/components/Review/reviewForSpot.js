@@ -7,7 +7,8 @@ import { thunkGetSpotReviews } from "../../store/review";
 import { deleteReview } from '../../store/review';
 import { useHistory } from "react-router-dom";
 import DeleteReviewModal from "../Modals/deleteReviewModal";
-import SingleReview from "../Spots/currentSpots/singleReview";
+import SingleReview from "./singleReview";
+import ReviewForm from "../Forms/reviewForm";
 
 
 
@@ -18,10 +19,13 @@ const SpotReview = () => {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState()
   const {reviewId} = useParams()
+  // const [openModal,setOpenModal] = useState(false)
   const history = useHistory()
-  const users= useSelector(state => state.session.user)
+  // const users= useSelector(state => state.session.user)
   const [openModal,setOpenModal] = useState(false)
-
+  const user= useSelector(state => state.session)
+  const spot= useSelector(state=> state.spots.spot[spotId])
+  let spot1=Object.values(spot)
   // const handleDelete = (e) => {
   //   e.preventDefault();
   //   dispatch(deleteReview(reviewId));
@@ -30,7 +34,6 @@ const SpotReview = () => {
   const spotReviews = useSelector((state) =>{
     return state.reviews.spot
   })
-  console.log('state', spotReviews)
   useEffect(() => {
     const error = async() => {
         const error = await dispatch(thunkGetSpotReviews(spotId));
@@ -42,18 +45,27 @@ const SpotReview = () => {
 // const spot = Object.values(spotObj)[0][0]
 const spotArr = Object.values(spotReviews)
 // const spotArr1 = Object.values(spotArr)
-console.log('spot stuff',spotArr)
+
 
 // if(!Object.values(spotReview).length) {return null}
 // if(!spotArr.length){return null}
-if(Object.values(spotArr).length<1){return null}
+// if(Object.values(spotArr).length<1){return null}
+let createReviewButton = false
+  spotArr.map((review)=> {
+
+      return (
+       !user.user || review.userId === user.user.id || user.user.id === spot.ownerId  ? createReviewButton = false : createReviewButton= true
+      )
+  })
   return (
     <>
+    {openModal && <ReviewForm closeModal ={setOpenModal}/>}
      {/* <h3><span><i class="fa-solid fa-star"></i></span>{spotArr.length === 1 ? ` ${spotArr.avgStarRating}·${spotArr.numReviews} review`: spotArr.length === 0 ? "New" :` ${spotArr.avgStarRating} · ${spotArr.numReviews} reviews` }</h3> */}
-
+     {/* <h3><span><i class="fa-solid fa-star"></i></span>{spotArr.length === 1 ? ` ${spot.avgStarRating.toFixed(1)}·${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h3> */}
+     {createReviewButton && <button onClick={()=>setOpenModal(true)}>Post Your Review</button>}
+     {user.user && !spotArr.length && user.user.id !== spot.ownerId ? <div><button onClick={()=>setOpenModal(true)}>Post Your Review</button>Be the first to post a review</div> : null}
      {spotArr.toReversed().map((r) =>{
       return( <>
-      {console.log('roger',r)}
         <SingleReview r={r} /> </>)
      })}
 

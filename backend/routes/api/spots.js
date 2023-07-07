@@ -104,8 +104,7 @@ router.get('/:spotId/bookings', requireAuth,async(req, res) => {
   });
 
 
-router.get("/:spotId/reviews", requireAuth,async (req, res) => {
-  console.log('reqbody', req.params.spotId)
+router.get("/:spotId/reviews",async (req, res) => {
   let spot = await Spot.findByPk(req.params.spotId, {
     attributes: [],
     include: [
@@ -126,7 +125,7 @@ router.get("/:spotId/reviews", requireAuth,async (req, res) => {
   if (!spot) {
     return res.status(404).json({ message: "Spot couldn't be found" });
   }
-  // console.log(spot)
+
   return res.json(spot);
 
 });
@@ -204,8 +203,6 @@ if(Object.keys(errors).length){
 })
 
 router.post("/:spotId/images", requireAuth, async (req, res) => {
-  console.log('req body', req.body)
-  console.log('params id',req.params.spotId)
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) {
     res.status(404);

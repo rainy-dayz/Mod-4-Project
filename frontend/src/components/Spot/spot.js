@@ -36,40 +36,21 @@ const SpotInfo = () => {
         const error = await dispatch(thunkGetSpot(spotId));
         setErrors(error)
     }
-    // const spotRev= async() =>{
-    //   const spotRev1=await dispatch(thunkGetSpotReviews(spotId))
-    //   console.log('spotRev',spotRev1)
-    // }
-    // spotRev()
     error()
 }, [dispatch, spotId]);
-// console.log('reviews',reviews)
+
 const spot = useSelector((state) =>state.spots.spot[spotId])
-// const spot = Object.values(spotObj)[0][0]
-// if(!Object.values(spot).length) {return null}
-// const spotArr = Object.values(spot)
-// console.log('spot stuff',spot)
+
 
 if (!spot) return <></>;
-// if (spot.error) {
-  //     const err = setErrors(spot.error);
-  //     console.log(err)
-  //   }
+
   if(!spot || !spot.id) return null
   if(spot.SpotImages === undefined) {return <></>}
   let endArray= spot.SpotImages.slice(1)
-  // const user= useSelector(state =>{
-  //   return state.session.user
-  // })
-  // console.log('session',state.session.user)
-  // if(sessionStorage.user)
-  const message = () => {
-   return "Feature coming soon"
-  }
+
   return (
     <div className="currentBox">
       {/* <h2>{users.firstName}</h2> */}
-      {openModal && <ReviewForm closeModal ={setOpenModal}/>}
     <h2>{spot.name}</h2>
     <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
     <div className="allimages-box">
@@ -90,24 +71,23 @@ if (!spot) return <></>;
      </div>
      <div>
     <div className = "reserve-box">
+
       <div className="top-row-reserve">
     <h3>{`$${spot.price} night`}</h3>
-    <h5><span><i class="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h5>
+
+    <h5><span><i className="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h5>
     </div>
     <button onClick={()=>alert("Feature Coming Soon")} className="reserve">Reserve</button>
     </div>
      </div>
      </div>
-     <h3><span><i class="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}·${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h3>
+     <h3><span><i className="fa-solid fa-star"></i></span>{ spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}·${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h3>
     {/* <Link to={`/spots/${spotId}/reviews`}>Reviews</Link> */}
     {/* <Link to={`/spots/${spotId}/review`}>Create Review</Link> */}
     {/* <div>{spots.session.user.firstName}</div> */}
     <SpotReview spotId={spotId} />
-    {/* {users ? users.id !== spot.ownerId? */}
-    <button  onClick={()=>setOpenModal(true)}>
-            Create A Review
-          </button>
-       {/* } */}
+    {/* {(users ? users.id:Infinity)!== spot.ownerId? <button onClick={()=>setOpenModal(true)}>Create A Review</button>:} */}
+    {/* <button onClick={()=>setOpenModal(true)}>Create A Review</button> */}
     </div>
   );
 };

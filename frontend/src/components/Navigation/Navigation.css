@@ -80,7 +80,9 @@ height:60px;
     z-index:1;
 
    }
-
+form{
+    align-items: center;
+}
 
    .profile-dropdown div {
        color: black;

@@ -18,7 +18,7 @@ function Spots() {
     const spots = useSelector(state => {
         return Object.values(state.spots.allSpots)});
         if(!Object.values(spots).length) {return null}
-        // console.log('SPOTS',spots[0].city)
+
     return (
       <div>
 
@@ -27,7 +27,7 @@ function Spots() {
         {/* <Link to = '/spots/:spotId/edit'>Edit a Spot</Link> */}
         <div className="cards">
         {spots.map((spot) => {
-          // console.log('SPOTSSSSS',spot)
+
           return (
             <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>
             {/* <Link to={`/spots/${spot.id}`}> */}

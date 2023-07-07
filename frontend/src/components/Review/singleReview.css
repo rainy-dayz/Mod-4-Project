@@ -1,0 +1,24 @@
+.review-box{
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid grey;
+    gap: 2px;
+    font-size: 18px;
+    align-content: center;
+    justify-content: center;
+    align-items: flex-start;
+    margin:5px;
+}
+.date{
+    color:grey;
+    font-size:15px;
+}
+.username{
+
+}
+.text{
+    font-size:14px;
+}
+button{
+    font-size:13px;
+}

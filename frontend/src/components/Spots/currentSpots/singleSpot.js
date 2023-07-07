@@ -4,11 +4,12 @@ import { useHistory } from 'react-router-dom';
 import DeleteModal from '../../Modals/deleteSpotModal';
 
 // import SpotReview from "../../Review/reviewForSpot"
-const SingleSpot = ({spot}) =>{
+const SingleSpot = ({spot, setCount,count }) =>{
     const [openModal,setOpenModal] = useState(false)
     const history = useHistory()
 return (
-<>
+  <>
+<div className="singleSpotcont">
           <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>
           {/* <Link to={`/spots/${spot.id}`}> */}
             {/* {spot.address} {spot.name} */}
@@ -18,7 +19,7 @@ return (
             {/* <i className="fa-regular fa-star"></i> */}
             <div className="top">
             <p>{`${spot.city}, ${spot.state}`}</p>
-            <p><span><i class="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating.toFixed(1)}`: "New"}</p>
+            <p><span><i className="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating.toFixed(1)}`: "New"}</p>
             </div>
             <p>{`$${spot.price} night`}</p>
             </div>
@@ -27,12 +28,14 @@ return (
         <button  onClick={()=>setOpenModal(true)}>
           Delete
         </button>
-          {openModal && <DeleteModal closeDeleteModal = {setOpenModal} spot = {spot}/>}
+          {openModal && <DeleteModal closeDeleteModal = {setOpenModal} spot = {spot} />}
         {/* <button onClick={(e) => {
            e.preventDefault()
         return dispatch(deleteSpot(spot.id))}}>Delete</button> */}
         </div>
-</>
+         </div>
+        </>
+
   )
 }
 

@@ -22,7 +22,6 @@ function CurrentReviews() {
     const reviews = useSelector(state => {
         return Object.values(state.reviews.spot)});
         if(!Object.values(reviews).length) {return null}
-        // console.log('SPOTS',spots[0].city)
 
         if(!reviews) return  <></>
     return (

@@ -25,7 +25,7 @@ const [previewImage2,setPreviewImage2] = useState('')
 // const [previewImage3,setPreviewImage3] = useState('')
 // const [previewImage4,setPreviewImage4] = useState('')
 // const [previewImage5,setPreviewImage5] = useState('')
-// console.log('previewImage',spot.SpotImages[0])
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -33,12 +33,7 @@ const handleSubmit = async (e) => {
   spot = { ...spot, address, city, state,country, lat,lng,name,description, price,previewImage};
   if (formType === "Update Spot") {
     spot = await dispatch(updateSpot(spot));
-    // console.log('create image',previewImage)
-    // let image = await dispatch (thunkCreateSpotImage(spot.id))
-    // console.log('update spot',spot)
-
         } else if (formType === "Create Spot") {
-          console.log('test')
             spot = await dispatch(createSpot(spot));
             if(previewImage){
               await dispatch (thunkCreateSpotImage(spot.id, previewImage))
@@ -60,7 +55,6 @@ const handleSubmit = async (e) => {
           }
     if (spot.error) {
       setErrors(spot.error);
-      // console.log(err)
     }else {
         history.push(`/spots/${spot.id}`)
     }
@@ -70,7 +64,6 @@ const handleSubmit = async (e) => {
   };
 //   if (!formType === "Update Spot")
 //   const spots =useSelector(state => {
-//     console.log(state)
 //     return state})
 return (
     <form className = "form" onSubmit={handleSubmit}>
@@ -158,7 +151,7 @@ return (
       <label>
         <div className="info">
         <h4>Describe your place to guests</h4>
-        <h5>Mention the best features of your amusement park!</h5>
+        <h5>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h5>
         </div>
         <textarea
           type="text"

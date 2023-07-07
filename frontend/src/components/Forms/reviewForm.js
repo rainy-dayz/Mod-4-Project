@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 // import { createSpot,updateSpot} from "../../store/spots";
 import { thunkCreateReview } from "../../store/review";
+import { thunkGetSpot } from '../../store/spots';
 import './reviewModal.css'
 import StarRatingInput from './starRatingInput';
 
@@ -20,18 +21,16 @@ const ReviewForm = ({ closeModal, formType, reviews }) => {
 
   const spot =  useSelector(state=> state.spots.spot[spotId])
   const user= useSelector(state => state.session.user)
-  // console.log('spot',spot)
   const handleSubmit = async (e) => {
       e.preventDefault();
       setErrors({});
       reviews = {review,stars};
-      console.log('reviews',reviews)
       // if (formType === "Create Review") {
           reviews = await dispatch(thunkCreateReview(spotId,reviews,user));
+          await dispatch(thunkGetSpot(spotId))
 
       if (reviews.error) {
         setErrors(reviews.error);
-        // console.log(err)
       }else {
           history.push(`/spots/${spotId}`)
           closeModal(false)

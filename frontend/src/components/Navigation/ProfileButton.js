@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './Navigation.css'
+import { useHistory } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const history = useHistory()
 
   const openMenu = () => {
     if (showMenu) return;
@@ -36,6 +38,7 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    history.push('/')
     closeMenu();
   };
 
@@ -54,7 +57,7 @@ function ProfileButton({ user }) {
             <div className="content-box">
             <div className = "firstName">{`Hello,  ${user.firstName}`}</div>
             <div className="firstName">{user.email}</div>
-            <div onClick={closeMenu}className="manage-spots-border"><Link className='manage-spot' to= '/spots/current'>Manage Spots</Link></div>
+            <div onClick={closeMenu}className="manage-spots-border"><NavLink className='manage-spot' to= '/spots/current'>Manage Spots</NavLink></div>
               <div className="btn-container">
               <button className= "logout-btn"onClick={logout}>Log Out</button>
               </div>

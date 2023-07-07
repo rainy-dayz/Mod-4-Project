@@ -16,8 +16,8 @@ const DeleteModal = ({spot, closeDeleteModal}) =>{
             <div className= "modalCont">
                 <h2>Confirm Delete</h2>
                 <h4>Are you sure you want to remove this spot?</h4>
-                <button onClick ={handleDelete}>Yes (Delete Spot)</button>
-                <button onClick = {() =>closeDeleteModal(false)}>No (Keep Spot)</button>
+                <button className="yes" onClick ={handleDelete}>Yes (Delete Spot)</button>
+                <button className="no" onClick = {() =>closeDeleteModal(false)}>No (Keep Spot)</button>
             </div>
         </div>
     )
