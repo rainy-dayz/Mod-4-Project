@@ -17,10 +17,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users'
-        }
+        type: Sequelize.INTEGER
+        // references: {
+        //   model: 'Users'
+        // }
       },
       review: {
         type: Sequelize.STRING
