@@ -75,13 +75,13 @@ if (!spot) return <></>;
       <div className="top-row-reserve">
     <h3>{`$${spot.price} night`}</h3>
 
-    <h5><span><i className="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h5>
+    <h5><span><i className="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h5>
     </div>
     <button onClick={()=>alert("Feature Coming Soon")} className="reserve">Reserve</button>
     </div>
      </div>
      </div>
-     <h3><span><i className="fa-solid fa-star"></i></span>{ spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}·${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h3>
+     <h3><span><i className="fa-solid fa-star"></i></span>{ spot.numReviews === 1 ? ` ${spot.avgStarRating}·${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating} · ${spot.numReviews} reviews` }</h3>
     {/* <Link to={`/spots/${spotId}/reviews`}>Reviews</Link> */}
     {/* <Link to={`/spots/${spotId}/review`}>Create Review</Link> */}
     {/* <div>{spots.session.user.firstName}</div> */}

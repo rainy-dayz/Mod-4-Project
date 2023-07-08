@@ -11,8 +11,6 @@ const [address, setAddress] = useState(spot.address)
 const [city, setCity] = useState(spot.city)
 const [state, setState] = useState(spot.state)
 const [country,setCountry] = useState(spot.country)
-const [lat, setLat]= useState(spot.lat)
-const [lng, setLng]= useState(spot.lng)
 const [name, setName]= useState(spot.name)
 const [description, setDescription]= useState(spot.description)
 const [price, setPrice]= useState(spot.price)
@@ -59,7 +57,7 @@ const handleSubmit = async (e) => {
   // if(Object.values(error).length)return
 
   setErrors({});
-  spot = { ...spot, address, city, state,country, lat,lng,name,description, price};
+  spot = { ...spot, address, city, state,country,name,description, price};
   if (formType === "Update Spot") {
     spot = await dispatch(updateSpot(spot));
         } else if (formType === "Create Spot") {
@@ -169,7 +167,7 @@ return (
           />
           </label>
        </div>
-      <div className="latLng">
+      {/* <div className="latLng">
       <label>
         Latitude
       <div className="errors">{errors.lat}</div>
@@ -194,7 +192,7 @@ return (
           onChange={(e) => setLng(e.target.value)}
         />
       </label>
-       </div>
+       </div> */}
        </div>
       <div className = "address-info">
       <label>

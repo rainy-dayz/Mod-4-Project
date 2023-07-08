@@ -7,7 +7,7 @@ import DeleteModal from '../../Modals/deleteSpotModal';
 const SingleSpot = ({spot, setCount,count }) =>{
     const [openModal,setOpenModal] = useState(false)
     const history = useHistory()
-    
+
 return (
   <>
 <div className="singleSpotcont">
@@ -20,7 +20,7 @@ return (
             {/* <i className="fa-regular fa-star"></i> */}
             <div className="top">
             <p>{`${spot.city}, ${spot.state}`}</p>
-            <p><span><i className="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating.toFixed(1)}`: "New"}</p>
+            <p><span><i className="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating}`: "New"}</p>
             </div>
             <p>{`$${spot.price} night`}</p>
             </div>
