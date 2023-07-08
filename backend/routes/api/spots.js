@@ -27,15 +27,16 @@ let isSpot= (spot)=>{
   let answer=[]
   spot.forEach((spot) => {
     let total = 0;
+    let reviews= spot.Reviews.length
     spot = spot.toJSON();
     const count = spot.Reviews.map((review) => {
       total += review.stars;
       return total
     });
 
-    // let avgRating = total / count.length
-    // avgRating = avgRating ? Number.parseFloat(avgRating).toFixed(1) : 0
-    let avgRating = count.length > 0 ? total / count.length : null;
+    let avgRating = total / reviews
+    avgRating = avgRating ? Number.parseFloat(avgRating).toFixed(1) : 0
+    // let avgRating = count.length > 0 ? total / count.length : null;
     if(!spot.SpotImages.length) spot.previewImage='no images'
     for (let image of spot.SpotImages) {
         if(image.preview){
@@ -146,18 +147,19 @@ router.get("/:spotId", async (req, res) => {
 
   if (spot) {
     let total = 0;
+    let reviews= spot.Reviews.length
     const count = spot.Reviews.map((review) => {
       total += review.stars;
-      return total
+
     });
-    // console.log('COUNTSSSSSSSSSSSSS', count)
-    // console.log('COUNTSSSSSSSSSSSSS', total)
-    // let avgRating = total / count.length
-    // avgRating = avgRating ? Number.parseFloat(avgRating).toFixed(1) : 0
-    let avgRating = count.length > 0 ? total / count.length : null;
+    console.log('COUNTSSSSSSSSSSSSS', reviews)
+    console.log('COUNTSSSSSSSSSSSSS', total)
+    let avgRating = total / reviews
+    avgRating = avgRating ? Number.parseFloat(avgRating).toFixed(1) : 0
+    // let avgRating = count.length > 0 ? total / count.length : null;
     let place = spot.toJSON();
     delete place.Reviews;
-    place.numReviews = count.length;
+    place.numReviews = reviews;
     // place.avgStarRating = Math.round(avgRating*100)/100;
     place.avgStarRating = avgRating
     answer.push(place);
