@@ -75,6 +75,9 @@ button{
     margin:10px;
     width:fit-content;
     align-items:center;
+    background:red;
+    color:white;
+    cursor:pointer;
 }
 
 .btn-cont {

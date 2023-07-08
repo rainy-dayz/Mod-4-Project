@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import DeleteModal from '../../Modals/deleteSpotModal';
+import "./spots.css"
 
 // import SpotReview from "../../Review/reviewForSpot"
 const SingleSpot = ({spot, setCount,count }) =>{

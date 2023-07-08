@@ -21,4 +21,10 @@
 }
 button{
     font-size:13px;
+    background:grey;
+}
+
+.post-review{
+    display:flex;
+    flex-direction:column;
 }

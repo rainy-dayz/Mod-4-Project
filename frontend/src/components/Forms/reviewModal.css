@@ -34,5 +34,7 @@
 
 .stars{
   display:flex;
-  border:1px solid black;
+  flex-direction:row;
+  /* border:1px solid black; */
+  align-items: center;
 }

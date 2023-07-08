@@ -25,6 +25,7 @@
     flex-direction:column;
       align-items:center;
       justify-content: center;
+      border-radius:15%;
     }
 
     .yes{
@@ -32,10 +33,19 @@
       color:white;
       padding:5px;
       border-radius:7%;
+      border:none;
+      /* padding:2px 15px; */
+      font-size:15px;
+    }
+    .yes :hover{
+      background:rgb(50, 3, 3);
     }
 .no{
   background:grey;
   color:white;
   padding:5px;
   border-radius:7%;
+  border:none;
+      /* padding:2px 15px; */
+      font-size:15px;
 }

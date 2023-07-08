@@ -11,6 +11,8 @@ const [address, setAddress] = useState(spot.address)
 const [city, setCity] = useState(spot.city)
 const [state, setState] = useState(spot.state)
 const [country,setCountry] = useState(spot.country)
+const [lat, setLat]= useState(22)
+const [lng, setLng]= useState(22)
 const [name, setName]= useState(spot.name)
 const [description, setDescription]= useState(spot.description)
 const [price, setPrice]= useState(spot.price)
@@ -18,9 +20,9 @@ const [errors, setErrors] = useState({});
 const dispatch = useDispatch();
 const history = useHistory();
 const [previewImage,setPreviewImage] = useState('')
-const [previewImageErrors, setPreviewImageErrors] = useState({})
-const [previewImageErrors2, setPreviewImageErrors2] = useState({})
-const [previewImage2,setPreviewImage2] = useState('')
+// const [previewImageErrors, setPreviewImageErrors] = useState({})
+// const [previewImageErrors2, setPreviewImageErrors2] = useState({})
+// const [previewImage2,setPreviewImage2] = useState('')
 const [hasSubmitted, setHasSubmitted] = useState(false)
 // const [previewImage4,setPreviewImage4] = useState('')
 // const [previewImage5,setPreviewImage5] = useState('')
@@ -35,13 +37,13 @@ let disabled = true
 useEffect(()=>{
   let errors = {};
   setErrors({});
-  if(!address) {errors.address = "Must have a valid address"}
-  if(!city) {errors.city = "Must have a valid city"}
-  if(!state) {errors.state = "Must have a valid state"}
-  if(!country) {errors.country = "Must have a valid country"}
-  if(!name) {errors.name = "Must have a valid name"}
-  if(!description || description.length<30){errors.description = "Must have a valid description"}
-  if(price < 1) {errors.price = "Must have a valid price"}
+  if(!address) {errors.address = "Address is required"}
+  if(!city) {errors.city = "City is required"}
+  if(!state) {errors.state = "State is required"}
+  if(!country) {errors.country = "Country is required"}
+  if(!name) {errors.name = "Name is required"}
+  if(!description || description.length<30){errors.description = "Description needs 30 or more characters"}
+  if(price < 1) {errors.price = "Price per night is required"}
   if(formType === "Create Spot"){
    if(!previewImage) {errors.previewImage = "Must have a valid url"}
   }
@@ -53,11 +55,11 @@ useEffect(()=>{
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-// setHasSubmitted(true)
-  // if(Object.values(error).length)return
+setHasSubmitted(true)
+  if(Object.values(errors).length)return
 
   setErrors({});
-  spot = { ...spot, address, city, state,country,name,description, price};
+  spot = { ...spot, address, city, state,country, lat,lng,name,description, price};
   if (formType === "Update Spot") {
     spot = await dispatch(updateSpot(spot));
         } else if (formType === "Create Spot") {
@@ -122,7 +124,7 @@ return (
       </div>
       <div >
       <label>
-        Country <div className="errors">{errors.country}</div>
+        Country {hasSubmitted && <div className="errors">{errors.country}</div>}
         <input
           type="text"
           size="50"
@@ -135,7 +137,7 @@ return (
       <div>
       <label>
         Street Address
-      <div className="errors">{errors.address}</div>
+      {hasSubmitted && <div className="errors">{errors.address}</div>}
         <input
           type="text"
           size="50"
@@ -147,7 +149,7 @@ return (
       </div>
       <div className="latLng">
       <label>City
-        <div className="errors">{errors.city}</div>
+        {hasSubmitted &&<div className="errors">{errors.city}</div>}
         <input
           type="text"
           size="22"
@@ -157,7 +159,7 @@ return (
         />
         </label>
       <label>State
-      <div className="errors">{errors.state}</div>
+      {hasSubmitted &&<div className="errors">{errors.state}</div>}
         <input
           type="text"
           size="22"
@@ -207,7 +209,7 @@ return (
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-      <div className="errors">{errors.description}</div>
+      {hasSubmitted &&<div className="errors">{errors.description}</div>}
       </label>
        </div>
       <div className = "address-info">
@@ -223,7 +225,7 @@ return (
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-      <div className="errors">{errors.name}</div>
+      {hasSubmitted &&<div className="errors">{errors.name}</div>}
       </label>
        </div>
       <div className = "address-info">
@@ -243,7 +245,7 @@ return (
           onChange={(e) => setPrice(e.target.value)}
         />
         </div>
-      <div className="errors">{errors.price}</div>
+      {hasSubmitted &&<div className="errors">{errors.price}</div>}
         </div>
       </label>
        </div>
@@ -262,7 +264,7 @@ return (
           value={previewImage}
           onChange={(e) => setPreviewImage(e.target.value)}
         />
-       <div className="errors">{errors.previewImage}</div>
+       {hasSubmitted &&<div className="errors">{errors.previewImage}</div>}
       </label>
        </div>
        <div>
@@ -313,7 +315,7 @@ return (
        </div>
        :null}
        <div className="btn-cont">
-      <button disabled={Object.values(errors).length}type="submit">{formType}</button>
+      <button type="submit">{formType}</button>
       </div>
 
     </form>

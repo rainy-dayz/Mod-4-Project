@@ -59,13 +59,13 @@ const ReviewForm = ({ closeModal, formType, reviews }) => {
         </label>
         <div className="errors">{error.stars}</div>
         <div className="stars">
-        <label>
-          Stars
+        <label className='stars'>
           <StarRatingInput
           disabled={false}
           onChange={onChange}
           stars={stars}
           />
+          Stars
         </label>
           </div>
         <button type="submit" disabled={disable}onClick={()=>

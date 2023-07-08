@@ -66,7 +66,7 @@ if (!spot) return <></>;
      </div>
      <div className="info-book">
      <div className="info-spot">
-     <p>{`Hosted by ${spot.Owner.firstName}, ${spot.Owner.lastName}`}</p>
+     <h2>{`Hosted by ${spot.Owner.firstName}, ${spot.Owner.lastName}`}</h2>
     <p>{spot.description}</p>
      </div>
      <div>

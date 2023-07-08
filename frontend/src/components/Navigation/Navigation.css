@@ -9,9 +9,7 @@
     margin-right:20px;
     border-bottom:1px solid grey;
 }
-.list-box{
-    /* border:1px solid rgb(21, 0, 255); */
-}
+
 .logo{
 width:150px;
 height:60px;
@@ -30,7 +28,9 @@ height:60px;
     color:black;
 }
 
-
+.logo-box{
+    cursor:pointer;
+}
 
  .dropbtn {
     background-color: rgb(19, 7, 7);
@@ -41,7 +41,7 @@ height:60px;
     display:flex;
     gap:10px;
     border-radius: 25%;
-
+    cursor:pointer;
   }
 
   .manage-spots-border{
@@ -54,10 +54,15 @@ height:60px;
     padding:2px;
     margin:4px;
 }
+.buttons-profile{
+    cursor:pointer;
+    border-radius:25%
+}
 .logout-btn{
     border-radius:10%;
     margin:12px;
-
+    cursor:pointer;
+    background:grey;
 }
 .content-box{
     display:flex;

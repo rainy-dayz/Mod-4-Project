@@ -24,7 +24,7 @@ function LoginFormModal() {
       });
   };
   let disable=true
-  if(credential.length >3 && password.length >5){
+  if(credential.length >3 || password.length >5){
     disable =false
   }
   return (

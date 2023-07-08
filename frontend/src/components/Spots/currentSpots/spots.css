@@ -2,6 +2,9 @@ body{
     /* border:1px solid #A52A2A; */
     text-decoration:none;
 }
+button{
+  background:grey;
+}
 .top{
     display: flex;
 
@@ -22,15 +25,12 @@ body{
     display: flex;
     flex-wrap:wrap;
     flex-direction:column;
-
+    cursor:pointer;
     /* gap:10px; */
     /* border-bottom: 1px dotted black; If you want dots under the hoverable text */
     /* border:1px solid #A52A2A; */
   }
-  .tooltip:hover{
-    background:rgb(244, 241, 241);
-    border-radius:5%;
-  }
+
   /* Tooltip text */
   .tooltip .tooltiptext {
     visibility: hidden;
@@ -89,12 +89,12 @@ body{
 
 }
 
-.buttons:hover{
+/* .buttons:hover{
   background:rgb(244, 241, 241);
   border-radius:5%;
-}
+} */
 
-.singleSpotcont:hover{
+/* .singleSpotcont:hover{
   background:rgb(244, 241, 241);
   border-radius:5%;
-}
+} */
