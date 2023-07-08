@@ -1,6 +1,4 @@
 'use strict';
-
-/** @type {import('sequelize-cli').Migration} */
 const bcrypt = require("bcryptjs");
 
 let options = {};
@@ -13,22 +11,22 @@ module.exports = {
     options.tableName = 'Users';
     return queryInterface.bulkInsert(options, [
       {
-        firstName:'Chris',
-        lastName:'Pine',
+        firstName:'Matt',
+        lastName: 'Boyer',
         email: 'demo@user.io',
         username: 'Demo-lition',
         hashedPassword: bcrypt.hashSync('password')
       },
       {
-        firstName:'Amy',
-        lastName:'Pond',
+        firstName: 'Dani',
+        lastName: 'Bruva',
         email: 'user1@user.io',
         username: 'FakeUser1',
         hashedPassword: bcrypt.hashSync('password2')
       },
       {
-        firstName:'Mike',
-        lastName:'Tyson',
+        firstName: 'James',
+        lastName: 'Henrnadez',
         email: 'user2@user.io',
         username: 'FakeUser2',
         hashedPassword: bcrypt.hashSync('password3')
