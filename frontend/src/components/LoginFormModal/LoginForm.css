@@ -6,12 +6,12 @@
     align-items:center;
     /* background:black; */
     /* border:1px solid black; */
-    cursor:pointer;
+    /* cursor:pointer; */
     border-radius:15%;
 }
 .login-btn{
   cursor:pointer;
-
+  padding:4px 50px;
 }
 .demo-user{
     background: none;
