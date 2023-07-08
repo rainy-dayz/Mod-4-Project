@@ -30,7 +30,7 @@ let isSpot= (spot)=>{
     let reviews= spot.Reviews.length
     spot = spot.toJSON();
     const count = spot.Reviews.map((review) => {
-      total += review.stars;
+      total += parseInt(review.stars);
       return total
     });
 
@@ -149,8 +149,8 @@ router.get("/:spotId", async (req, res) => {
     let total = 0;
     let reviews= spot.Reviews.length
     const count = spot.Reviews.map((review) => {
-      total += review.stars;
-
+      total += parseInt(review.stars);
+      return total
     });
     console.log('COUNTSSSSSSSSSSSSS', reviews)
     console.log('COUNTSSSSSSSSSSSSS', total)
