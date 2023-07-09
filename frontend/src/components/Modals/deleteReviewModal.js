@@ -14,7 +14,7 @@ const DeleteReviewModal = ({reviewId, closeDeleteModal,spotId}) =>{
     return (
         <div className="modalBackground">
             <div className= "modalCont">
-                <h2>Confirm Delete</h2>
+            <h2>Confirm Review</h2>
                 <h4>Are you sure you want to remove this review?</h4>
                 <button className="yes"onClick ={handleDelete}>Yes (Delete Review)</button>
                 <button className="no"onClick = {() =>closeDeleteModal(false)}>No (Keep Review)</button>
