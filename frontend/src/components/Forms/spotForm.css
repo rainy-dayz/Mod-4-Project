@@ -90,3 +90,7 @@ button{
  display:flex;
  flex-direction:row
 }
+
+.submitBtn{
+    background:red;
+}

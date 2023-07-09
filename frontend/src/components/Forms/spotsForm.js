@@ -316,7 +316,7 @@ return (
        </div>
        :null}
        <div className="btn-cont">
-      <button type="submit">{formType}</button>
+      <button className="submitBtn" type="submit">{formType}</button>
       </div>
 
     </form>
