@@ -11,14 +11,14 @@ body{
     justify-content: space-between;
 }
 .cards{
-    display: flex;
-    /* column-gap:15px; */
-    flex-wrap:wrap;
-    justify-content:space-evenly;
-    gap:15px;
-    margin:auto;
-    justify-content: flex-start;
-    /* border:1px solid #A52A2A; */
+  display: flex;
+  /* column-gap: 15px; */
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 15px;
+  margin: auto;
+  padding: 30px;
+  justify-content: flex-start;
 }
 .tooltip {
     position: relative;
@@ -89,12 +89,4 @@ body{
 
 }
 
-/* .buttons:hover{
-  background:rgb(244, 241, 241);
-  border-radius:5%;
-} */
 
-/* .singleSpotcont:hover{
-  background:rgb(244, 241, 241);
-  border-radius:5%;
-} */

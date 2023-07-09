@@ -35,7 +35,7 @@ function Spots() {
 
               <div className="top">
               <p>{`${spot.city}, ${spot.state}`}</p>
-              <p><span><i class="fa-solid fa-star"></i></span>{(spot.avgRating) ? `${spot.avgRating}`: "New"}</p>
+              <p><span><i class="fa-solid fa-star"></i></span>{(spot.avgRating) ? `${spot.avgRating.toFixed(1)}`: "New"}</p>
               </div>
               <p>{`$${spot.price} per night`}</p>
               </div>

@@ -28,3 +28,11 @@ button{
     display:flex;
     flex-direction:column;
 }
+.starReview{
+    font-size:5px;
+}
+
+.starName{
+    display:flex;
+    align-items: center;
+}

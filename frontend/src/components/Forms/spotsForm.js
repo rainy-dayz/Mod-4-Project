@@ -46,6 +46,7 @@ useEffect(()=>{
   if(price < 1) {errors.price = "Price per night is required"}
   if(formType === "Create Spot"){
    if(!previewImage) {errors.previewImage = "Must have a valid url"}
+  if(!previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg') && !previewImage.endsWith('.png')) {errors.previewImage = "Image must be jpg, jpeg, png"}
   }
   // if(hasSubmitted){
 

@@ -12,6 +12,7 @@
 .login-btn{
   cursor:pointer;
   padding:4px 50px;
+  background:red;
 }
 .demo-user{
     background: none;
@@ -29,4 +30,8 @@
 
 #modal-content{
   border-radius:2%;
+}
+
+.errors{
+  color:red;
 }

@@ -21,7 +21,7 @@ return (
             {/* <i className="fa-regular fa-star"></i> */}
             <div className="top">
             <p>{`${spot.city}, ${spot.state}`}</p>
-            <p><span><i className="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating}`: "New"}</p>
+            <p><span><i className="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating.toFixed(1)}`: "New"}</p>
             </div>
             <p>{`$${spot.price} night`}</p>
             </div>

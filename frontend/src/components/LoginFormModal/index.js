@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { useHistory } from "react-router-dom";
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -10,6 +11,7 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,20 +54,16 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && (
-          <p>{errors.credential}</p>
+          <p className="errors">{errors.credential}</p>
         )}
-        <button className="login-btn" type="submit" disabled={disable}>Log In</button>
+        <button className="login-btn" type="submit" onClick={() => history.push('/')} disabled={disable}>Log In</button>
       </form>
         <button className="demo-user" onClick={() => {
           // setErrors({});
           return dispatch(sessionActions.login({ credential:'FakeUser1', password:'password2' }))
-            .then(closeModal)
-            // .catch(async (res) => {
-            //   const data = await res.json();
-            //   if (data && data.errors) {
-            //     setErrors(data.errors);
-            //   }
-            // });
+          .then(history.push('/'))
+          .then(closeModal)
+
         }} >Demo User</button>
     </div>
   );

@@ -15,11 +15,14 @@
 }
 .signUpBtn{
     background:red;
-    padding:20px;
+    padding:5px 20px;
     color:white;
     box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
 }
 
   button:disabled {
     background:rgb(228, 225, 225);
+}
+.errors{
+    color:red;
 }

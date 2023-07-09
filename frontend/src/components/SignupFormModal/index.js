@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
+import { useHistory } from "react-router-dom";
 import "./SignupForm.css";
 
 function SignupFormModal() {
@@ -14,6 +15,7 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,14 +50,14 @@ function SignupFormModal() {
   return (
     <div className='signUpForm'>
       <h1>Sign Up</h1>
-          {errors.email && <p>{errors.email}</p>}
-          {errors.firstName && <p>{errors.firstName}</p>}
-          {errors.username && <p>{errors.username}</p>}
-          {errors.password && <p>{errors.password}</p>}
+          {errors.email && <p className="errors">{errors.email}</p>}
+          {errors.firstName && <p className="errors">{errors.firstName}</p>}
+          {errors.username && <p className="errors">{errors.username}</p>}
+          {errors.password && <p className="errors">{errors.password}</p>}
           {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
+          <p className="errors">{errors.confirmPassword}</p>
         )}
-          {errors.lastName && <p>{errors.lastName}</p>}
+          {errors.lastName && <p className="errors">{errors.lastName}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Email
@@ -112,7 +114,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        <button className="signUpBtn" type="submit" disabled={disable}>Sign Up</button>
+        <button className="signUpBtn" type="submit" onClick={() => history.push('/')} disabled={disable}>Sign Up</button>
       </form>
     </div>
   );
