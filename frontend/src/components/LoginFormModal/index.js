@@ -61,7 +61,7 @@ function LoginFormModal() {
         <button className="demo-user" onClick={() => {
           // setErrors({});
           return dispatch(sessionActions.login({ credential:'FakeUser1', password:'password2' }))
-          .then(history.push('/'))
+          .then(()=>history.push('/'))
           .then(closeModal)
 
         }} >Demo User</button>
