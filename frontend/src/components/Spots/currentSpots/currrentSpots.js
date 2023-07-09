@@ -39,6 +39,7 @@ function CurrentSpots() {
         <div>
         <div className="cards">
         {spots.map((spot) =>
+       
           // return (
           //   <div>
           //   <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>

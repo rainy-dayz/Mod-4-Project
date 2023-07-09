@@ -3,22 +3,22 @@ import { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import DeleteModal from '../../Modals/deleteSpotModal';
 import "./spots.css"
+import { useSelector } from "react-redux";
 
 // import SpotReview from "../../Review/reviewForSpot"
-const SingleSpot = ({spot, setCount,count }) =>{
+const SingleSpot = ({spot }) =>{
     const [openModal,setOpenModal] = useState(false)
     const history = useHistory()
-
+    const spotImg = useSelector(state => state.spots.spot)
+  console.log('this is spotImg',spotImg)
 return (
   <>
 <div className="singleSpotcont">
           <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>
-          {/* <Link to={`/spots/${spot.id}`}> */}
-            {/* {spot.address} {spot.name} */}
-            {/* <div class="tooltip">Hover over me */}
+
             <span className="tooltiptext">{spot.name}</span>
-            <img className='pics'src={spot.previewImage? `${spot.previewImage}`: "https://cdn.pixabay.com/photo/2016/05/31/10/52/not-yet-1426593_1280.png"} />
-            {/* <i className="fa-regular fa-star"></i> */}
+            <img className='pics'src={spot.previewImage} />
+            {console.log('this is a spot',spot)}
             <div className="top">
             <p>{`${spot.city}, ${spot.state}`}</p>
             <p><span><i className="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating.toFixed(1)}`: "New"}</p>

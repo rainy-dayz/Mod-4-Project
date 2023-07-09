@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createSpot,thunkCreateSpotImage,updateSpot} from "../../store/spots";
+import { createSpot,thunkCreateSpotImage,updateSpot, thunkCreateSpotImage2} from "../../store/spots";
 import './spotForm.css'
 
 
@@ -21,18 +21,13 @@ const dispatch = useDispatch();
 const history = useHistory();
 const [previewImage,setPreviewImage] = useState('')
 // const [previewImageErrors, setPreviewImageErrors] = useState({})
-// const [previewImageErrors2, setPreviewImageErrors2] = useState({})
-// const [previewImage2,setPreviewImage2] = useState('')
+const [previewImage3, setPreviewImage3] = useState('')
+const [previewImage2,setPreviewImage2] = useState('')
 const [hasSubmitted, setHasSubmitted] = useState(false)
-// const [previewImage4,setPreviewImage4] = useState('')
-// const [previewImage5,setPreviewImage5] = useState('')
-console.log('this is error',errors)
-// useEffect(()=>{
-// const errors = {}
-// if(previewImage.length === 0) errors.previewImage = 'Preview image is required'
-// if(!previewImage.endsWith('.jpg'))
-// setErrors(errors)
-// },[previewImage,previewImage2])
+const [previewImage4,setPreviewImage4] = useState('')
+const [previewImage5,setPreviewImage5] = useState('')
+
+
 let disabled = true
 useEffect(()=>{
   let errors = {};
@@ -66,7 +61,10 @@ setHasSubmitted(true)
         } else if (formType === "Create Spot") {
             spot = await dispatch(createSpot(spot));
               await dispatch (thunkCreateSpotImage(spot.id, previewImage))
-
+              await dispatch (thunkCreateSpotImage2(spot.id, previewImage2))
+               await dispatch (thunkCreateSpotImage2(spot.id, previewImage3))
+             await dispatch (thunkCreateSpotImage2(spot.id, previewImage4))
+             await dispatch (thunkCreateSpotImage2(spot.id, previewImage5))
 
             // if (spot.error) {
             //   return setErrors(spot.error)
@@ -271,11 +269,11 @@ return (
        <div>
       <label>
         <input
-          // type="text"
+          type="text"
           size="50"
           placeholder="Image URL"
-          // value={previewImage2}
-          // onChange={(e) => setPreviewImage2(e.target.value)}
+          value={previewImage2}
+          onChange={(e) => setPreviewImage2(e.target.value)}
         />
       {/* <div className="errors">{previewImageErrors2.previewImage2}</div> */}
       </label>
@@ -283,33 +281,33 @@ return (
        <div>
       <label>
         <input
-          // type="url"
+          type="text"
           size="50"
           placeholder="Image URL"
-          // value={previewImage3}
-          // onChange={(e) => setPreviewImage3(e.target.value)}
+          value={previewImage3}
+          onChange={(e) => setPreviewImage3(e.target.value)}
         />
       </label>
        </div>
        <div>
       <label>
         <input
-          // type="url"
+          type="text"
           size="50"
           placeholder="Image URL"
-          // value={previewImage4}
-          // onChange={(e) => setPreviewImage4(e.target.value)}
+          value={previewImage4}
+          onChange={(e) => setPreviewImage4(e.target.value)}
         />
       </label>
        </div>
        <div >
       <label>
         <input
-          // type="url"
+          type="text"
           size="50"
           placeholder="Image URL"
-          // value={previewImage5}
-          // onChange={(e) => setPreviewImage5(e.target.value)}
+          value={previewImage5}
+          onChange={(e) => setPreviewImage5(e.target.value)}
         />
       </label>
        </div>
