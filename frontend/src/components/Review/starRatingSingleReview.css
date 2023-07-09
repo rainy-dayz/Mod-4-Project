@@ -1,11 +1,11 @@
-.rating-input .filled {
+.rating-input2 .filled {
     color: black;
   }
 
-  .rating-input .empty {
+  .rating-input2 .empty {
     color: rgb(193, 189, 189);
   }
-.rating-input{
+.rating-input2{
     display:flex;
     justify-content:center;
     font-size:14px

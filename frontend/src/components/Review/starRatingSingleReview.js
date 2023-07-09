@@ -8,11 +8,11 @@ const StarRatingSingleReview = ({ stars }) => {
     setActiveRating(stars);
   }, [stars]);
 
-  const starArr= Array(5).fill(0)
+
   return (
 
 
-    <div className="rating-input">
+    <div className="rating-input2">
 
       <div
         className={activeRating >= 1 ? "filled" : "empty"}

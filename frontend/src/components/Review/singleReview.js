@@ -2,7 +2,6 @@ import DeleteReviewModal from "../Modals/deleteReviewModal"
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import './singleReview.css'
-import StarRatingInput from "../Forms/starRatingInput";
 import StarRatingSingleReview from "./starRatingSingleReview";
 // import SpotReview from "../../Review/reviewForSpot"
 const SingleReview = ({r}) =>{
