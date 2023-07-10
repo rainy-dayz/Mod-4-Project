@@ -54,7 +54,9 @@ if (!spot) return <></>;
     <h2>{spot.name}</h2>
     <p>{`${spot.city}, ${spot.state}, ${spot.country}`}</p>
     <div className="allimages-box">
+      <div className="img">
     <img className="mainImg" src ={spot.SpotImages[0]? `${spot.SpotImages[0].url}`: "https://www.betel.uk/wp-content/uploads/property_placeholder.jpg"} />
+    </div>
     <div className="box-smallImg">
     {endArray.map(spot =>{
       return(

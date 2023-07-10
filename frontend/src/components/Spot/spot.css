@@ -5,16 +5,17 @@
 }
 
 .sideImg{
-    width:240px;
-    height:240px;
+    width:235px;
+    height:235px;
     border-radius:2%
 /* flex-wrap:wrap; */
     /* object-fit:cover; */
 }
 .mainImg{
-    width:500px;
-    height:500px;
-    border-radius:2%
+    width:480px;
+    height:480px;
+    border-radius:2%;
+    /* margin-left: 20px; */
     /* object-fit:cover; */
 }
 .box-smallImg{
@@ -22,11 +23,13 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap:3px;
+    width:500px;
 }
 .allimages-box{
     display:flex;
     flex-direction: row;
     gap:5px;
+    justify-content: center;
 
 
 }
@@ -62,7 +65,9 @@ background:rgb(212, 12, 12);
 }
 
 
-
+.currentBox{
+    margin:0px 10px;
+}
 .create-review-btn{
 
 }
