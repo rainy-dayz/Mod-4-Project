@@ -20,7 +20,6 @@ const [errors, setErrors] = useState({});
 const dispatch = useDispatch();
 const history = useHistory();
 const [previewImage,setPreviewImage] = useState('')
-// const [previewImageErrors, setPreviewImageErrors] = useState({})
 const [previewImage3, setPreviewImage3] = useState('')
 const [previewImage2,setPreviewImage2] = useState('')
 const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -41,7 +40,9 @@ useEffect(()=>{
   if(price < 1) {errors.price = "Price per night is required"}
   if(formType === "Create Spot"){
    if(!previewImage) {errors.previewImage = "Must have a valid url"}
-  if(!previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg') && !previewImage.endsWith('.png')) {errors.previewImage = "Image must be jpg, jpeg, png"}
+  if(!previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg') && !previewImage.endsWith('.png')) {errors.previewImage = "Image is required and must be jpg, jpeg, png"}
+  // if(previewImage2 !== ""&& (!previewImage2.endsWith('.jpg') && !previewImage2.endsWith('.jpeg') && !previewImage2.endsWith('.png'))) {errors.previewImage2 = "Image must be jpg, jpeg, png"}
+
   }
   // if(hasSubmitted){
 
@@ -275,7 +276,7 @@ return (
           value={previewImage2}
           onChange={(e) => setPreviewImage2(e.target.value)}
         />
-      {/* <div className="errors">{previewImageErrors2.previewImage2}</div> */}
+     {/* {hasSubmitted && <div className="errors">{errors.previewImage2}</div>} */}
       </label>
        </div>
        <div>

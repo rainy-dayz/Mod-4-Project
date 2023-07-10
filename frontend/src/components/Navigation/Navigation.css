@@ -13,6 +13,8 @@
 .logo{
 width:150px;
 height:60px;
+/* width:150px;
+height:120px; */
 }
 .right-corner{
     display: flex;
