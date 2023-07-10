@@ -152,7 +152,7 @@ return (
         {hasSubmitted &&<div className="errors">{errors.city}</div>}
         <input
           type="text"
-          size="22"
+          size="23"
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
