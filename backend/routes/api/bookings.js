@@ -12,7 +12,7 @@ router.get('/current', requireAuth, async (req, res)=>{
         include:{model:Spot, attributes:{exclude:['description','createdAt','updatedAt']},include:{model:SpotImage}}
 
     })
-if(!booking.length) res.json({message: "You have no bookings at this time"})
+if(!booking.length) return
     booking.forEach((spot)=> {
         spot =spot.toJSON()
         if(!spot.Spot.SpotImages.length) spot.previewImage='no images'

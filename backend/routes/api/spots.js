@@ -173,6 +173,7 @@ router.get("/:spotId", async (req, res) => {
 
 router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
   const {startDate,endDate} = req.body
+  console.log('req.body--------------------------------',req.body)
   const spot = await Spot.findByPk(req.params.spotId);
   if(!spot){
     return res.status(404).json({message: "Spot couldn't be found"});
@@ -184,6 +185,8 @@ router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
     return res.status(400).json({message:"Bad Request", errors:{endDate:"endDate cannot be on or before startDate"}})
   }
   const startDay = new Date(startDate)
+  console.log('allBookings--------------------',startDate)
+
   const today = new Date()
   if(today > startDay) return res.status(404).json({message:"Cannot create a bookng for the past"})
 const bookings = await Booking.findAll()
@@ -193,7 +196,6 @@ const bookingMatch = bookings.forEach(book =>{
   if(spot.id === book.spotId) allBookings.push(book)
 
 })
-
 let errors={}
 
 allBookings.forEach(final =>{

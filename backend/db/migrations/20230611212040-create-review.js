@@ -18,9 +18,6 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER
-        // references: {
-        //   model: 'Users'
-        // }
       },
       review: {
         type: Sequelize.STRING

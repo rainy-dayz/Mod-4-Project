@@ -67,9 +67,9 @@ const validateReview = (review, stars) => {
 router.put('/:reviewId', requireAuth, async (req,res) =>{
     let reviews = await Review.findByPk(req.params.reviewId)
     const { review, stars,userId,spotId} = req.body;
-  if (!reviews) {
-    return res.status(400).json({message: "Review couldn't be found"});
-  }
+  if (!reviews) return
+    // res.status(400).json({message: "Review couldn't be found"});
+  
 if(reviews.userId !== req.user.dataValues.id) return res.status(403).json({message:'You cannot edit a review that belongs to another user'})
   let error = validateReview(review, stars);
   if (error){
