@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { thunkCreateBooking, thunkGetBookings, thunkGetCurrentBookings, thunkUpdateBooking } from '../../store/bookings';
+import { thunkGetUsersBookings, thunkEditASingleBooking } from '../../store/bookings';
 import DatePicker from 'react-datepicker';
 // import './createBooking.css'
 
@@ -17,10 +17,10 @@ const EditBooking = ({ closeModal,bookingId,startDay,endDay,spotId }) => {
   const [date, setDate] = useState();
   const dispatch = useDispatch();
   const history = useHistory();
-  const bookings = Object.values(useSelector(state => state.bookings.allBookings));
+  const bookings = Object.values(useSelector(state => state.bookings.spotBookings));
   // console.log('thisismybookings',bookings)
   useEffect(() => {
-    dispatch(thunkGetCurrentBookings())
+    dispatch(thunkGetUsersBookings())
 }, [])
 let today = new Date()
     today.setDate(today.getDate() + 1);
@@ -30,8 +30,8 @@ let today = new Date()
       e.preventDefault();
       setErrors({});
       let data = {startDate,endDate};
-      let datas = await dispatch(thunkUpdateBooking(bookingId,data));
-      dispatch(thunkGetCurrentBookings())
+      let datas = await dispatch(thunkEditASingleBooking(bookingId,data));
+      dispatch(thunkGetUsersBookings())
       if (datas.errors) {
         setErrors(datas.errors);
       }else {

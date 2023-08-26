@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { thunkDeleteBooking, thunkGetCurrentBookings } from '../../store/bookings';
+import { thunkDeleteBooking, thunkDeleteSingleBooking, thunkGetUsersBookings } from '../../store/bookings';
 import EditBooking from '../EditBooking';
 
 
@@ -9,14 +9,14 @@ function CurrentBookings() {
     const dispatch = useDispatch()
     const history = useHistory()
     const [openModal,setOpenModal] = useState(false)
-    const bookings = Object.values(useSelector(state => state.bookings.allBookings));
+    const bookings = Object.values(useSelector(state => state.bookings.userBookings));
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [bookingid, setBookingid] = useState('')
     // console.log(bookings)
 
     useEffect(() => {
-        dispatch(thunkGetCurrentBookings());
+        dispatch(thunkGetUsersBookings());
     }, [dispatch]);
     if(!bookings)return <></>
 
@@ -37,8 +37,8 @@ function CurrentBookings() {
                   setBookingid(booking.id)
                   }}>Edit Your Booking</button>}
                 <button onClick={()=> {
-                  dispatch(thunkDeleteBooking(booking.id))
-                  .then(()=> dispatch(thunkGetCurrentBookings()))
+                  dispatch(thunkDeleteSingleBooking(booking.id))
+                  .then(()=> dispatch(thunkGetUsersBookings()))
                 }}>Cancel Booking</button>
                 </div>
                 )

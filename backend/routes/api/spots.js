@@ -95,18 +95,33 @@ router.get("/current", requireAuth, async (req, res) => {
   res.json({ Spots: ans });
 });
 
-router.get('/:spotId/bookings', requireAuth,async(req, res) => {
-    const spot = await Spot.findByPk(req.params.spotId);
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
-    if(!spot) return
-    const queries = { where: { spotId:req.params.spotId } };
+  const allBookings = await Booking.findAll({
+      where:{
+          spotId: req.params.spotId
+      },
+      include: {model: User, attributes: ['id', 'firstName', 'lastName']}
+  })
 
-    if (spot.ownerId !== req.user.dataValues.id) queries.attributes = ["spotId","startDate", "endDate"];
-    else queries.include = [{ model: User, attributes: ["id", "firstName", "lastName"] }];
+  if(allBookings.length === 0){
+      // res.status(404)
+      return res.json({
+          Bookings: []
+      })
+  } else {
+      const spot = await Spot.findByPk(req.params.spotId)
+      let Bookings = allBookings.map((bookings) => {
+          let booking = bookings.toJSON()
 
-    const Bookings = await Booking.findAll(queries);
-    res.json({ Bookings });
-  });
+          return spot.ownerId !== req.user.dataValues.id ? {spotId: booking.spotId, startDate: booking.startDate, endDate: booking.endDate} : booking
+
+      })
+
+      res.json({Bookings: Bookings})
+  }
+
+})
 
 
 router.get("/:spotId/reviews",async (req, res) => {

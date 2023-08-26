@@ -4,50 +4,62 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SpotReview from "../Review/reviewForSpot";
-import { thunkGetSpot, deleteSpot } from "../../store/spots";
+import { thunkGetOneSpot, deleteSpot, thunkGetSpot } from "../../store/spots";
 import './spot.css'
 import { useHistory } from "react-router-dom";
 // import CreateReviewModal from "../Modals/createReviewModal";
 import ReviewForm from "../Forms/reviewForm";
 import { thunkGetSpotReviews } from "../../store/review";
 import CreateBooking from "../CreateBooking";
-import { thunkGetBookings } from "../../store/bookings";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { thunkCreateABooking, thunkGetBookings, thunkGetSingleSpotBookings } from "../../store/bookings";
 
 
 
 const SpotInfo = () => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
-  const [errors, setErrors] = useState()
-  const [startDate, setStartDate] = useState('')
-  const {user} =useState()
-  const history= useHistory()
-  const [openModal,setOpenModal] = useState(false)
-  const users= useSelector(state => state.session.user)
-  const reviews= useSelector(state => state.reviews.spot)
-  const [date, setDate] = useState(new Date());
-
-  // const [length,setLength] = useState(Object.values(reviews.length))
-
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    await dispatch(deleteSpot(spotId));
-  };
-
   useEffect(() => {
-    const error = async() => {
-        const error = await dispatch(thunkGetSpot(spotId));
-        setErrors(error)
-    }
-    error()
-}, [dispatch, spotId]);
+    dispatch(thunkGetSpot(spotId))
+}, [dispatch, spotId])
+
+const reviews = useSelector(state => state.reviews.spot)
+const user = useSelector(state => state.session.user)
+const reviewArr = Object.values(reviews)
+
+
+// ------------------------handles calander input-----------------
+const [startDate, setStartDate] = useState(new Date());
+const [endDate, setEndDate] = useState();
+
+
 useEffect(() => {
-  dispatch(thunkGetBookings(spotId))
+    dispatch(thunkGetSingleSpotBookings(spotId))
 }, [spotId])
+
+const allDates = Object.values(useSelector(state => state.bookings.spotBookings))
+console.log('allDates',allDates)
+
+const dateRanges = allDates.map(date => ({
+    start: new Date(date.startDate),
+    end: new Date(date.endDate)
+}))
+
+
+const handleClick = () => {
+    const dates = {
+        startDate,
+        endDate
+    }
+    dispatch(thunkCreateABooking(spotId, dates))
+}
+
 const spot = useSelector((state) =>state.spots.spot[spotId])
 
 
 if (!spot) return <></>;
+if (!spot || !Object.values(spot).length) return null
 
   if(!spot || !spot.id) return null
   if(spot.SpotImages === undefined) {return <></>}
@@ -84,15 +96,32 @@ if (!spot) return <></>;
 
     <h5><span><i className="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} reviews` }</h5>
     </div>
-  <CreateBooking spot={spot}/>
-    {/* <button  className="reserve">Reserve</button> */}
+
+
+    <DatePicker
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+        selectsStart
+        startDate={startDate}
+        endDate={endDate}
+         excludeDateIntervals={dateRanges}
+      />
+      <DatePicker
+         selected={endDate || startDate}
+        onChange={(date) => setEndDate(date)}
+        selectsEnd
+        startDate={startDate}
+        endDate={endDate}
+        minDate={startDate}
+        excludeDateIntervals={dateRanges}
+      />
+<button className="reserve" onClick={handleClick}>Reserve</button>
     </div>
      </div>
      </div>
      <h3><span><i className="fa-solid fa-star"></i></span>{ spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}  ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} reviews` }</h3>
     <SpotReview spotId={spotId} />
-    {/* {(users ? users.id:Infinity)!== spot.ownerId? <button onClick={()=>setOpenModal(true)}>Create A Review</button>:} */}
-    {/* <button onClick={()=>setOpenModal(true)}>Create A Review</button> */}
+
     </div>
   );
 };
