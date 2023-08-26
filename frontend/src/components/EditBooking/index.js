@@ -17,7 +17,7 @@ const EditBooking = ({ closeModal,bookingId,startDay,endDay,spotId }) => {
   const [date, setDate] = useState();
   const dispatch = useDispatch();
   const history = useHistory();
-  const bookings = Object.values(useSelector(state => state.bookings.allBookings));
+  const bookings = Object.values(useSelector(state => state.bookings.userBookings));
   // console.log('thisismybookings',bookings)
   useEffect(() => {
     dispatch(thunkGetCurrentBookings())

@@ -9,7 +9,7 @@ function CurrentBookings() {
     const dispatch = useDispatch()
     const history = useHistory()
     const [openModal,setOpenModal] = useState(false)
-    const bookings = Object.values(useSelector(state => state.bookings.allBookings));
+    const bookings = Object.values(useSelector(state => state.bookings.userBookings));
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [bookingid, setBookingid] = useState('')
