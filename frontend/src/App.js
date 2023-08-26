@@ -11,6 +11,7 @@ import CurrentSpots from "./components/Spots/currentSpots/currrentSpots";
 import CurrentReviews from "./components/Review/review";
 import SpotReview from "./components/Review/reviewForSpot";
 import CreateReviewForm from "./components/Forms/createReviewForm";
+import CurrentBookings from "./components/Bookings";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,9 @@ function App() {
           </Route>
           <Route exact path="/spots/current" >
           <CurrentSpots/>
+          </Route>
+          <Route exact path="/bookings/current" >
+          <CurrentBookings/>
           </Route>
           <Route exact path ='/spots/:spotId'>
           <SpotInfo />

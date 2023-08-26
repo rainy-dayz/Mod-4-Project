@@ -10,7 +10,8 @@ import { useHistory } from "react-router-dom";
 // import CreateReviewModal from "../Modals/createReviewModal";
 import ReviewForm from "../Forms/reviewForm";
 import { thunkGetSpotReviews } from "../../store/review";
-
+import CreateBooking from "../CreateBooking";
+import { thunkGetBookings } from "../../store/bookings";
 
 
 
@@ -18,11 +19,13 @@ const SpotInfo = () => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
   const [errors, setErrors] = useState()
+  const [startDate, setStartDate] = useState('')
   const {user} =useState()
   const history= useHistory()
   const [openModal,setOpenModal] = useState(false)
   const users= useSelector(state => state.session.user)
   const reviews= useSelector(state => state.reviews.spot)
+  const [date, setDate] = useState(new Date());
 
   // const [length,setLength] = useState(Object.values(reviews.length))
 
@@ -38,7 +41,9 @@ const SpotInfo = () => {
     }
     error()
 }, [dispatch, spotId]);
-
+useEffect(() => {
+  dispatch(thunkGetBookings(spotId))
+}, [spotId])
 const spot = useSelector((state) =>state.spots.spot[spotId])
 
 
@@ -79,14 +84,12 @@ if (!spot) return <></>;
 
     <h5><span><i className="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} reviews` }</h5>
     </div>
-    <button onClick={()=>alert("Feature Coming Soon")} className="reserve">Reserve</button>
+  <CreateBooking spot={spot}/>
+    {/* <button  className="reserve">Reserve</button> */}
     </div>
      </div>
      </div>
      <h3><span><i className="fa-solid fa-star"></i></span>{ spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}  ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} reviews` }</h3>
-    {/* <Link to={`/spots/${spotId}/reviews`}>Reviews</Link> */}
-    {/* <Link to={`/spots/${spotId}/review`}>Create Review</Link> */}
-    {/* <div>{spots.session.user.firstName}</div> */}
     <SpotReview spotId={spotId} />
     {/* {(users ? users.id:Infinity)!== spot.ownerId? <button onClick={()=>setOpenModal(true)}>Create A Review</button>:} */}
     {/* <button onClick={()=>setOpenModal(true)}>Create A Review</button> */}

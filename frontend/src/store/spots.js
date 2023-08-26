@@ -88,7 +88,7 @@ const actionReadSpot = (spots) => ({
       return errors;
     }
   }
-  
+
   export const thunkGetCurrentSpots = (spots) => async (dispatch) => {
     try {const response = await csrfFetch(`/api/spots/current`);
 
@@ -201,8 +201,6 @@ export default function spotReducer(state = initialState, action) {
 
       return {...newState}
       // return newState
-
-
     }
     case GET_CURRENT:{
       let newState = {...state, allSpots:{}}
@@ -212,9 +210,7 @@ export default function spotReducer(state = initialState, action) {
 
       return newState
     }
-    // return {...state, allSpots: {...action.spots.Spots}}
     case RECIEVE_SPOT:{
-        // return {...state, ...action.spots}
         let newState = {...state,spot:{}}
         for(let spot of action.spots){
             newState.spot[spot.id]=spot

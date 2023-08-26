@@ -3,6 +3,8 @@ const READ_REVIEWS = "reviews/READ_ALL_REVIEWS"
 const RECIEVE_SPOT_REVIEWS = "spots/RECIEVE_SPOT_REVIEWS"
 const CREATE_REVIEW = "spots/CREATE_REVIEWS"
 const DELETE_REVIEW = "reviews/DELETE_REVIEW"
+const EDIT_REVIEW = 'reviews/EDIT_REVIEW'
+const CLEAR_REVIEW = 'reviews/CLEAR_REVIEW'
 
 //actions
 const actionReadReviews = (reviews) => ({
@@ -24,6 +26,15 @@ const actionReadReviews = (reviews) => ({
     type:DELETE_REVIEW,
     reviewId
   })
+  const editReview = (reviewId) => ({
+    type:EDIT_REVIEW,
+    data:reviewId
+  })
+  export const clearReview=()=>{
+    return {
+        type:CLEAR_REVIEW
+    }
+}
 
   // thunks
   export const thunkGetCurrentReviews = (spots) => async (dispatch) => {
@@ -76,7 +87,25 @@ const actionReadReviews = (reviews) => ({
             return errors
         }
    }
+   export const updateReview = (reviewId,data,spotId) => async (dispatch) => {
+    try {const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
+    if (res.ok) {
+      const newReview = await res.json();
+      console.log('newReview',newReview)
+      dispatch(editReview(newReview));
+      dispatch(thunkGetSpotReviews(spotId))
+      return newReview;
+    }
+      } catch (error){
+      const errors = await error.json();
+      return errors;
+    }
+  };
 //    /api/reviews/:reviewId
 export const deleteReview = (reviewId) => async dispatch => {
     try {const response = await csrfFetch(`/api/reviews/${reviewId}`,{
@@ -118,8 +147,17 @@ export default function reviewReducer(state = initialState, action) {
           const newState={...state, spot:{...state.spot}}
           newState.spot[action.review.id]=action.review
           return newState
-            // return { ...state, spot[action.review.id]: action.review }};
         }
+        case EDIT_REVIEW: {
+          const newState = {...state,spot:{...state.spot}}
+
+          newState.spot[action.data.id] = action.data
+          return newState
+      }
+      case CLEAR_REVIEW:{
+        let newState={...state, spot:null}
+        return newState
+    }
         case DELETE_REVIEW:{
             // const newState= {...state.newState}
             const newState= {...state, spot:{...state.spot}}

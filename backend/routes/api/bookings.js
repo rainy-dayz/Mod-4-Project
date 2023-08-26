@@ -48,8 +48,11 @@ router.put('/:bookingId', requireAuth, async (req, res)=>{
       let booking = spot.Bookings
       booking.forEach(book =>{
         let final= book.toJSON()
-          if(final.startDate <= startDate && final.endDate >= startDate)errors.startDate = "Start date conflicts with an existing booking"
-          if(final.startDate <=endDate && final.endDate >= endDate) errors.endDate="End date conflicts with an existing booking"
+        if((final.startDate <= startDate && final.endDate >= startDate &&final.userId !== req.user.dataValues.id) ||
+   (final.startDate <=endDate && final.endDate >= endDate && final.userId !== req.user.dataValues.id))
+   errors.startDate = `Booking conflicts with an existing booking ${final.startDate.slice(5,7)}/${final.startDate.slice(8,10)}/${final.startDate.slice(0,4)} - ${final.endDate.slice(5,7)}/${final.endDate.slice(8,10)}/${final.endDate.slice(0,4)}`
+          // if(final.startDate <= startDate && final.endDate >= startDate && final.userId !== req.user.dataValues.id)errors.startDate = "Start date conflicts with an existing booking"
+          // if(final.startDate <=endDate && final.endDate >= endDate &&final.userId !== req.user.dataValues.id) errors.endDate="End date conflicts with an existing booking"
       })
 
       if(Object.keys(errors).length){

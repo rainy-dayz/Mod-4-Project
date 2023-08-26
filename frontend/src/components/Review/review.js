@@ -26,20 +26,15 @@ function CurrentReviews() {
         if(!reviews) return  <></>
     return (
       <main>
-        {/* <h1>Manage Spots</h1>
-        <Link to = '/spots/new'>Create a New Spot</Link>
-        <Link to = '/spots/:spotId/edit'>Edit a Spot</Link> */}
+
         {reviews.map((review) => {
           return (
             <>
-            {/* <NavLink key={review.id} to={`/reviews/${review.id}`}>
-              { review.id}
-              </NavLink> */}
+            
+
 
               <h2>{review.review}</h2>
-          {/* <button onClick={handleDelete}>
-            Delete
-          </button> */}
+
           </>
           )
 

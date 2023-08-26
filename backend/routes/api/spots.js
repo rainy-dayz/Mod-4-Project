@@ -98,7 +98,7 @@ router.get("/current", requireAuth, async (req, res) => {
 router.get('/:spotId/bookings', requireAuth,async(req, res) => {
     const spot = await Spot.findByPk(req.params.spotId);
 
-    if(!spot) return res.status(404).json({message: "Spot couldn't be found"})
+    if(!spot) return
     const queries = { where: { spotId:req.params.spotId } };
 
     if (spot.ownerId !== req.user.dataValues.id) queries.attributes = ["spotId","startDate", "endDate"];
@@ -175,20 +175,20 @@ router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
   const {startDate,endDate} = req.body
   console.log('req.body--------------------------------',req.body)
   const spot = await Spot.findByPk(req.params.spotId);
-  if(!spot){
-    return res.status(404).json({message: "Spot couldn't be found"});
-  }
+  if(!spot) return
+    // return res.status(404).json({message: "Spot couldn't be found"});
+
   if(spot.ownerId === req.user.dataValues.id){
     return res.status(403).json({message:"Cannot book a property you own"})
   }
   if(startDate >=endDate){
-    return res.status(400).json({message:"Bad Request", errors:{endDate:"endDate cannot be on or before startDate"}})
+    return res.status(400).json({message:"Bad Request", errors:{endDate:"End Date and Start Date cannot be the same"}})
   }
   const startDay = new Date(startDate)
-  console.log('allBookings--------------------',startDate)
+  // console.log('allBookings--------------------',startDate)
 
   const today = new Date()
-  if(today > startDay) return res.status(404).json({message:"Cannot create a bookng for the past"})
+  // if(today > startDay) return res.status(404).json({message:"Cannot create a bookng for the past"})
 const bookings = await Booking.findAll()
 let allBookings=[]
 const bookingMatch = bookings.forEach(book =>{
@@ -199,9 +199,16 @@ const bookingMatch = bookings.forEach(book =>{
 let errors={}
 
 allBookings.forEach(final =>{
-  if(final.startDate <= startDate && final.endDate >= startDate)errors.startDate = "Start date conflicts with an existing booking"
-  if(final.startDate <=endDate && final.endDate >= endDate) errors.endDate="End date conflicts with an existing booking"
-})
+  if(final.startDate <= startDate && final.endDate >= startDate){
+   errors.startDate = `Booking conflicts with an existing booking ${final.startDate.slice(5,7)}/${final.startDate.slice(8,10)}/${final.startDate.slice(0,4)} - ${final.endDate.slice(5,7)}/${final.endDate.slice(8,10)}/${final.endDate.slice(0,4)}`
+  }
+  if(final.startDate >= startDate && final.endDate <= endDate){
+    errors.startDate = `Booking conflicts with an existing booking ${final.startDate.slice(5,7)}/${final.startDate.slice(8,10)}/${final.startDate.slice(0,4)} - ${final.endDate.slice(5,7)}/${final.endDate.slice(8,10)}/${final.endDate.slice(0,4)}`
+  }
+   if(final.startDate <=endDate && final.endDate >= endDate){
+   errors.startDate = `Booking conflicts with an existing booking ${final.startDate.slice(5,7)}/${final.startDate.slice(8,10)}/${final.startDate.slice(0,4)} - ${final.endDate.slice(5,7)}/${final.endDate.slice(8,10)}/${final.endDate.slice(0,4)}`
+   }
+  })
 
 if(Object.keys(errors).length){
   return res.status(403).json({message: "Sorry, this spot is already booked for the specified dates",errors:errors})

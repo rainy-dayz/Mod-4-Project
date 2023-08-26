@@ -54,7 +54,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 setHasSubmitted(true)
   if(Object.values(errors).length)return
-
   setErrors({});
   spot = { ...spot, address, city, state,country, lat,lng,name,description, price};
   if (formType === "Update Spot") {

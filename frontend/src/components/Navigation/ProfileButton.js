@@ -58,6 +58,7 @@ function ProfileButton({ user }) {
             <div className = "firstName">{`Hello,  ${user.firstName}`}</div>
             <div className="firstName">{user.email}</div>
             <div onClick={closeMenu}className="manage-spots-border"><NavLink className='manage-spot' to= '/spots/current'>Manage Spots</NavLink></div>
+            <div onClick={closeMenu}className="manage-spots-border"><NavLink className='manage-spot' to= '/bookings/current'>Manage Bookings</NavLink></div>
               <div className="btn-container">
               <button className= "logout-btn"onClick={logout}>Log Out</button>
               </div>
