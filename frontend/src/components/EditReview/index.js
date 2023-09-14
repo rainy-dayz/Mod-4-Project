@@ -18,7 +18,7 @@ const [stars, setStars] = useState(star)
   const history = useHistory();
   const user= useSelector(state => state.session.user)
 
-console.log('what is r anyway',r)
+
 
   const handleSubmit = async (e) => {
       e.preventDefault();

@@ -19,13 +19,13 @@ const [price, setPrice]= useState(spot.price)
 const [errors, setErrors] = useState({});
 const dispatch = useDispatch();
 const history = useHistory();
-const [previewImage,setPreviewImage] = useState('')
-const [previewImage3, setPreviewImage3] = useState('')
-const [previewImage2,setPreviewImage2] = useState('')
+// const [previewImage,setPreviewImage] = useState('')
+// const [previewImage3, setPreviewImage3] = useState('')
+// const [previewImage2,setPreviewImage2] = useState('')
 const [hasSubmitted, setHasSubmitted] = useState(false)
-const [previewImage4,setPreviewImage4] = useState('')
-const [previewImage5,setPreviewImage5] = useState('')
-
+// const [previewImage4,setPreviewImage4] = useState('')
+// const [previewImage5,setPreviewImage5] = useState('')
+const [images, setImages] = useState([]);
 
 let disabled = true
 useEffect(()=>{
@@ -39,8 +39,8 @@ useEffect(()=>{
   if(!description || description.length<30){errors.description = "Description needs 30 or more characters"}
   if(price < 1) {errors.price = "Price per night is required"}
   if(formType === "Create Spot"){
-   if(!previewImage) {errors.previewImage = "Must have a valid url"}
-  if(!previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg') && !previewImage.endsWith('.png')) {errors.previewImage = "Image is required and must be jpg, jpeg, png"}
+   if(images.length>5) {errors.images = "Max 5 images"}
+  // if(!previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg') && !previewImage.endsWith('.png')) {errors.previewImage = "Image is required and must be jpg, jpeg, png"}
   // if(previewImage2 !== ""&& (!previewImage2.endsWith('.jpg') && !previewImage2.endsWith('.jpeg') && !previewImage2.endsWith('.png'))) {errors.previewImage2 = "Image must be jpg, jpeg, png"}
 
   }
@@ -48,7 +48,7 @@ useEffect(()=>{
 
     setErrors(errors);
   // }
-},[address, city, state, country, name, description, price, previewImage]);
+},[address, city, state, country, name, description, price,images]);
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -60,59 +60,19 @@ setHasSubmitted(true)
     spot = await dispatch(updateSpot(spot));
         } else if (formType === "Create Spot") {
             spot = await dispatch(createSpot(spot));
-              await dispatch (thunkCreateSpotImage(spot.id, previewImage))
-              await dispatch (thunkCreateSpotImage2(spot.id, previewImage2))
-               await dispatch (thunkCreateSpotImage2(spot.id, previewImage3))
-             await dispatch (thunkCreateSpotImage2(spot.id, previewImage4))
-             await dispatch (thunkCreateSpotImage2(spot.id, previewImage5))
-
-            // if (spot.error) {
-            //   return setErrors(spot.error)
-            // }
-
-            //   // console.log('image',image)
-            //   if(image.errors === undefined)return null
-            //   if (image.errors) {
-            //     console.log('made it here ')
-            //     return setErrors(image.errors)
-            //   }
-            // }else{
-            //   setPreviewImageErrors({previewImage:'Preview image is required'})
-            // }
-
-
-            // if(previewImage2.includes('.jpg') || previewImage2.includes('.jpeg') || previewImage2.includes('.png')){
-            //   dispatch (thunkCreateSpotImage(spot.id, previewImage2))
-            // }else{
-            //   setPreviewImageErrors2({previewImage2:'Image must include .png, .jpg, .jpeg'})
-            // }
-            //  dispatch (thunkCreateSpotImage(spot.id, previewImage3))
-            //  dispatch (thunkCreateSpotImage(spot.id, previewImage4))
-            //  dispatch (thunkCreateSpotImage(spot.id, previewImage5))
-            // setUrl(image.url)
-          // if(image.error) setErrors(image.error)
-          // if(image === undefined)return null
+              await dispatch (thunkCreateSpotImage(images,spot.id))
+            //   await dispatch (thunkCreateSpotImage2(spot.id, previewImage2))
+            //    await dispatch (thunkCreateSpotImage2(spot.id, previewImage3))
+            //  await dispatch (thunkCreateSpotImage2(spot.id, previewImage4))
+            //  await dispatch (thunkCreateSpotImage2(spot.id, previewImage5))
           }
-
-    // if (spot.error) {
-    //   setErrors(spot.error)
-      // setPreviewImageErrors(previewImage.previewImageErrors)
-    // }else {
         history.push(`/spots/${spot.id}`)
-
-    // }
-    // else {
-        // history.push(`/spots/${spot.id}`);
-    //   }
   };
-  // let disable=true
-  // if(previewImage!==""){
-  //   disable=false
-  // }
-//   if (!formType === "Update Spot")
-//   const spots =useSelector(state => {
-//     return state})
-// if(image.errors === undefined)return null
+
+const updateFiles = e => {
+  const files = e.target.files;
+  setImages(files);
+};
 return (
     <form className = "form" onSubmit={handleSubmit}>
       <h2>{formType}</h2>
@@ -239,7 +199,7 @@ return (
         <input
         className="price-input"
           type="number"
-          placeHolder="Price per night (USD)"
+          placeholder="Price per night (USD)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
@@ -248,7 +208,7 @@ return (
         </div>
       </label>
        </div>
-       {formType==="Create Spot" ?
+       {/* {formType==="Create Spot" ?
        <div className="address-info">
        <div>
       <label>
@@ -257,12 +217,10 @@ return (
         <h5>Submit a link to at least one photo to publish your spot.</h5>
         </div>
         <input
-          type="text"
-          size="50"
-          placeholder="Preview Image Url"
-          value={previewImage}
-          onChange={(e) => setPreviewImage(e.target.value)}
-        />
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            multiple
+            onChange={updateFiles} />
        {hasSubmitted &&<div className="errors">{errors.previewImage}</div>}
       </label>
        </div>
@@ -275,7 +233,7 @@ return (
           value={previewImage2}
           onChange={(e) => setPreviewImage2(e.target.value)}
         />
-     {/* {hasSubmitted && <div className="errors">{errors.previewImage2}</div>} */}
+
       </label>
        </div>
        <div>
@@ -312,7 +270,16 @@ return (
       </label>
        </div>
        </div>
-       :null}
+       :null} */}
+{hasSubmitted &&<div className="errors">{errors.images}</div>}
+<label>
+          Images to Upload
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            multiple
+            onChange={updateFiles} />
+        </label>
        <div className="btn-cont">
       <button className="submitBtn" type="submit">{formType}</button>
       </div>

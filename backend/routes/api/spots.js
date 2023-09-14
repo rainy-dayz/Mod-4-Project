@@ -1,6 +1,7 @@
 const express = require("express");
 const {Spot,SpotImage,User,Review,ReviewImage,Booking} = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
+const { multipleFilesUpload, multipleMulterUpload, retrievePrivateFile } = require("../../awsS3");
 
 const router = express.Router();
 
@@ -37,7 +38,7 @@ let isSpot= (spot)=>{
     // let avgRating = total / reviews
     // avgRating = avgRating ? parseInt(avgRating).toFixed(1) : 0
     let avgRating = count.length > 0 ? total / count.length : null;
-    if(!spot.SpotImages.length) spot.previewImage='no images'
+    if(!spot.SpotImages.length) spot.previewImage=null;
     for (let image of spot.SpotImages) {
         if(image.preview){
             spot.previewImage = image.url
@@ -101,7 +102,7 @@ router.get('/:spotId/bookings', requireAuth,async(req, res) => {
     if(!spot) return
     const queries = { where: { spotId:req.params.spotId } };
 
-    if (spot.ownerId !== req.user.dataValues.id) queries.attributes = ["spotId","startDate", "endDate"];
+    if (spot.ownerId !== req.user.dataValues.id) queries.attributes = ["spotId","startDate", "endDate","id"];
     else queries.include = [{ model: User, attributes: ["id", "firstName", "lastName"] }];
 
     const Bookings = await Booking.findAll(queries);
@@ -152,8 +153,7 @@ router.get("/:spotId", async (req, res) => {
       total += parseInt(review.stars);
       return total
     });
-    console.log('COUNTSSSSSSSSSSSSS', reviews)
-    console.log('COUNTSSSSSSSSSSSSS', total)
+
     // let avgRating = total / reviews
     // avgRating = avgRating ? parseInt(avgRating).toFixed(1) : 0
     let avgRating = count.length > 0 ? total / count.length : null;
@@ -173,7 +173,7 @@ router.get("/:spotId", async (req, res) => {
 
 router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
   const {startDate,endDate} = req.body
-  console.log('req.body--------------------------------',req.body)
+
   const spot = await Spot.findByPk(req.params.spotId);
   if(!spot) return
     // return res.status(404).json({message: "Spot couldn't be found"});
@@ -182,10 +182,13 @@ router.post('/:spotId/bookings', requireAuth,async (req,res) =>{
     return res.status(403).json({message:"Cannot book a property you own"})
   }
   if(startDate >=endDate){
-    return res.status(400).json({message:"Bad Request", errors:{endDate:"End Date and Start Date cannot be the same"}})
+    return res.status(400).json({message:"Bad Request", errors:{endDate:"Check-In and Check-Out cannot be the same day"}})
+  }
+  if(!endDate){
+    return res.status(400).json({message:"Bad Request", errors:{endDate:"Please provide a valid Check-Out date"}})
   }
   const startDay = new Date(startDate)
-  // console.log('allBookings--------------------',startDate)
+
 
   const today = new Date()
   // if(today > startDay) return res.status(404).json({message:"Cannot create a bookng for the past"})
@@ -224,7 +227,8 @@ if(Object.keys(errors).length){
 
 
 
-router.post("/:spotId/images", requireAuth, async (req, res) => {
+router.post("/:spotId/images", multipleMulterUpload("images"),requireAuth, async (req, res) => {
+
   const spot = await Spot.findByPk(req.params.spotId);
   if (!spot) {
     res.status(404);
@@ -233,12 +237,13 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
     });
   }
   const { url, preview } = req.body;
-
   if(spot.ownerId !== req.user.dataValues.id) return res.status(403).json({message:"To add an image you must own this spot"})
-  const newImage = await spot.createSpotImage({
-    url,
-    preview,
-  });
+  const keys = await multipleFilesUpload({ files: req.files });
+  const newImage = await Promise.all( keys.map(key=>spot.createSpotImage({
+    url:key,
+    preview:true,
+  })));
+  const imageUrls = images.map(image => retrievePrivateFile(image.key));
 
   return res.json({
     id: newImage.id,

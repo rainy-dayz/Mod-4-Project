@@ -47,36 +47,15 @@ const actionReadSpot = (spots) => ({
 
 
 
-  export const thunkCreateSpotImage = (spotId, data) => async (dispatch) => {
+  export const thunkCreateSpotImage = (images,spotId) => async (dispatch) => {
 
-    try {const response = await csrfFetch(`/api/spots/${spotId}/images`,{
-      method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({url:data,preview:`true`}),
-    });
-
-
-    if(response.ok){
-      const images = await response.json()
-      dispatch(actionCreateSpotImage(images))
-    }
-    }catch (error){
-      const errors = await error.json();
-      return errors;
-    }
-  }
-
-  export const thunkCreateSpotImage2 = (spotId, data) => async (dispatch) => {
-
-    try {const response = await csrfFetch(`/api/spots/${spotId}/images`,{
-      method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({url:data,preview:`false`}),
-    });
+    try {const formData = new FormData();
+      Array.from(images).forEach(image => formData.append("images", image));
+      const response = await csrfFetch(`/api/spots/${spotId}/images`,{
+        method: "POST",
+        body: formData
+      });
+    
 
 
     if(response.ok){
@@ -88,6 +67,27 @@ const actionReadSpot = (spots) => ({
       return errors;
     }
   }
+
+  // export const thunkCreateSpotImage2 = (spotId, data) => async (dispatch) => {
+
+  //   try {const response = await csrfFetch(`/api/spots/${spotId}/images`,{
+  //     method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({url:data,preview:`false`}),
+  //   });
+
+
+  //   if(response.ok){
+  //     const images = await response.json()
+  //     dispatch(actionCreateSpotImage(images))
+  //   }
+  //   }catch (error){
+  //     const errors = await error.json();
+  //     return errors;
+  //   }
+  // }
 
   export const thunkGetCurrentSpots = (spots) => async (dispatch) => {
     try {const response = await csrfFetch(`/api/spots/current`);

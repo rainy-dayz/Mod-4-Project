@@ -96,7 +96,7 @@ const actionReadReviews = (reviews) => ({
 
     if (res.ok) {
       const newReview = await res.json();
-      console.log('newReview',newReview)
+
       dispatch(editReview(newReview));
       dispatch(thunkGetSpotReviews(spotId))
       return newReview;

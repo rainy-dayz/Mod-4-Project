@@ -4,6 +4,7 @@ const GET_BOOKINGS="bookings/GET_BOOKINGS"
 const CREATE_BOOKING = "bookings/CREATE_BOOKING"
 const DELETE_BOOKING = "bookings/DELETE_BOOKING"
 const UPDATE_BOOKING="bookings/UPDATE_BOOKING"
+
 //
   const actionGetCurrent = (bookings) => ({
     type: GET_CURRENT,
@@ -25,12 +26,14 @@ const UPDATE_BOOKING="bookings/UPDATE_BOOKING"
     type: UPDATE_BOOKING,
     bookingId
   })
+
   export const thunkGetCurrentBookings = () => async (dispatch) => {
     try {const response = await csrfFetch(`/api/bookings/current`);
 
     if(response.ok){
       const bookings = await response.json()
       dispatch(actionGetCurrent(bookings))
+      return bookings
     }
     }catch (error){
       const errors = await error.json();
@@ -43,6 +46,7 @@ const UPDATE_BOOKING="bookings/UPDATE_BOOKING"
     if(response.ok){
       const bookings = await response.json()
       dispatch(actionGetBookings(bookings))
+      return bookings
     }
     }catch (error){
       const errors = await error.json();
@@ -90,6 +94,7 @@ export const thunkDeleteBooking = (bookingId) => async dispatch => {
 if(res.ok){
     const result = await res.json()
     dispatch(actionDeleteBooking(bookingId))
+    dispatch(thunkGetCurrentBookings())
     return result
 }} catch (e) {
     const error = e.json()
@@ -110,10 +115,13 @@ if(res.ok){
           return newState;
         }
         case GET_BOOKINGS:{
-            let newState = {...state, allBookings:{}}
+            const newState = {...state, allBookings:{}}
+            // console.log(action.bookings.Bookings)
             action.bookings.Bookings.forEach(ele => {
+
               newState.allBookings[ele.id]= ele
             });
+
             return newState
         }
         case CREATE_BOOKING: {
@@ -123,12 +131,10 @@ if(res.ok){
         }
         case DELETE_BOOKING: {
           const newState = { ...state, userBookings: { ...state.userBookings } }
-          delete newState.userBookings[action.id]
+          delete newState.userBookings[action.bookingId]
           return newState
         }
-        case UPDATE_BOOKING: {
-          return {...state, userBookings: { [action.data.id]: action.data}}
-      }
+
           default:
             return state;
         }

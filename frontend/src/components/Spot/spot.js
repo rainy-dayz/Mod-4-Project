@@ -12,6 +12,9 @@ import ReviewForm from "../Forms/reviewForm";
 import { thunkGetSpotReviews } from "../../store/review";
 import CreateBooking from "../CreateBooking";
 import { thunkGetBookings } from "../../store/bookings";
+import LoginFormModal from "../LoginFormModal";
+import OpenModalButton from '../OpenModalButton'
+import OpenModalButton2 from "../OpenModalButton/index2";
 
 
 
@@ -29,11 +32,6 @@ const SpotInfo = () => {
 
   // const [length,setLength] = useState(Object.values(reviews.length))
 
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    await dispatch(deleteSpot(spotId));
-  };
-
   useEffect(() => {
     const error = async() => {
         const error = await dispatch(thunkGetSpot(spotId));
@@ -41,9 +39,9 @@ const SpotInfo = () => {
     }
     error()
 }, [dispatch, spotId]);
-useEffect(() => {
-  dispatch(thunkGetBookings(spotId))
-}, [spotId])
+// useEffect(() => {
+//   dispatch(thunkGetBookings(spotId))
+// }, [spotId])
 const spot = useSelector((state) =>state.spots.spot[spotId])
 
 
@@ -52,7 +50,6 @@ if (!spot) return <></>;
   if(!spot || !spot.id) return null
   if(spot.SpotImages === undefined) {return <></>}
   let endArray= spot.SpotImages.slice(1)
-
   return (
     <div className="currentBox">
       {/* <h2>{users.firstName}</h2> */}
@@ -64,10 +61,11 @@ if (!spot) return <></>;
     </div>
     <div className="box-smallImg">
     {endArray.map(spot =>{
-      return(
+      return(<div key={spot.id}>
         <img className = "sideImg"src={spot.url? `${spot.url}`: "https://www.betel.uk/wp-content/uploads/property_placeholder.jpg"} />
-        // src={ele.previewImage?`${ele.previewImage}`: "https://t3.ftcdn.net/jpg/00/36/94/26/360_F_36942622_9SUXpSuE5JlfxLFKB1jHu5Z07eVIWQ2W.jpg"}
-        )
+        {/* {console.log('spot.url',spot.url)} */}
+
+        </div>)
       })}
       </div>
      </div>
@@ -84,8 +82,12 @@ if (!spot) return <></>;
 
     <h5><span><i className="fa-solid fa-star"></i></span>{spot.numReviews === 1 ? ` ${spot.avgStarRating.toFixed(1)}    ·   ${spot.numReviews} review`: spot.numReviews === 0 ? "New" :` ${spot.avgStarRating.toFixed(1)} · ${spot.numReviews} reviews` }</h5>
     </div>
-  <CreateBooking spot={spot}/>
-    {/* <button  className="reserve">Reserve</button> */}
+  {users ? (spot.Owner.id == users.id ? <div className="emptydiv"> </div> :<CreateBooking spot={spot}/>) :<div>
+      {<OpenModalButton2
+                  buttonText="Reserve"
+                  modalComponent={<LoginFormModal />}
+                />}</div>}
+
     </div>
      </div>
      </div>

@@ -64,7 +64,7 @@ let createReviewButton = false
      {user.user && !spotArr.length && user.user.id !== spot.ownerId ? <div className="post-review"><button onClick={()=>setOpenModal(true)}>Post Your Review</button>Be the first to post a review!</div> : null}
      {spotArr.toReversed().map((r) =>{
   // {console.log('chickensss',r)}
-      return( <>
+      return( <div key ={r.id}>
         <div className="review-box">
   <div className="starName">
         <div >{<StarRatingSingleReview stars={r.stars} />}</div>
@@ -76,6 +76,7 @@ let createReviewButton = false
            <div className="date">{`${months[new Date(r.createdAt).getMonth()]}, ${r?.createdAt.slice(0,4)}`}</div>
           <div className="text">{r.review}</div>
           {openModal1 && user.user && user.user.id == r.userId &&<EditReview closeModal = {setOpenModal1} r={r} rev={r.review} star={r.stars} spotId={spotId}/>}
+          <div className='contforeditreviewbuttons'>
           {(user.user ?user.user.id : Infinity) === r.userId ? <button  onClick={()=>setOpenModal1(true)}>
             Edit Review
           </button> : null
@@ -83,10 +84,10 @@ let createReviewButton = false
           {(user.user ?user.user.id : Infinity) === r.userId ? <button  onClick={()=>setOpenModal2(true)}>
             Delete Review
           </button> : null
-            }
+            }</div>
           {openModal2 && user.user && user.user.id == r.userId &&<DeleteReviewModal closeDeleteModal = {setOpenModal2} reviewId = {r.id} spotId={r.spotId}/>}
           </div>
-        </>)
+        </div>)
      })}
 
     </>

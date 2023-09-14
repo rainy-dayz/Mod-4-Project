@@ -60,11 +60,18 @@ function LoginFormModal() {
       </form>
         <button className="demo-user" onClick={() => {
           // setErrors({});
-          return dispatch(sessionActions.login({ credential:'FakeUser1', password:'password2' }))
+          return dispatch(sessionActions.login({ credential:'FakeUser1', password:'password' }))
           .then(()=>history.push('/'))
           .then(closeModal)
 
         }} >Demo User</button>
+        <button className="demo-user" onClick={() => {
+          // setErrors({});
+          return dispatch(sessionActions.login({ credential:'Demo-lition', password:'password' }))
+          .then(()=>history.push('/'))
+          .then(closeModal)
+
+        }} >Demo User 2</button>
     </div>
   );
 }

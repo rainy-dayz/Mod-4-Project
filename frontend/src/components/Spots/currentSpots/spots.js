@@ -5,6 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import './spots.css'
 
+
 function Spots() {
     const dispatch = useDispatch()
     const history = useHistory()
@@ -13,6 +14,7 @@ function Spots() {
 
     useEffect(() => {
         dispatch(getSpots());
+
     }, [dispatch]);
 
     const spots = useSelector(state => {
@@ -29,9 +31,9 @@ function Spots() {
         {spots.map((spot) => {
 
           return (
-            <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>
+            <div className="tooltip" key={spot.id} onClick={() => { history.push(`/spots/${spot.id}`)}}>
               <span className="tooltiptext">{spot.name}</span>
-              <img className='pics'src={spot.previewImage? `${spot.previewImage}`: "https://cdn.pixabay.com/photo/2016/05/31/10/52/not-yet-1426593_1280.png"} />
+              <img className='pics'src={spot.previewImage? spot.previewImage:"https://www.betel.uk/wp-content/uploads/property_placeholder.jpg"} />
 
               <div className="top">
 

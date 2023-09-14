@@ -36,12 +36,12 @@ router.put('/:bookingId', requireAuth, async (req, res)=>{
       }
     if(bookings.userId !== req.user.dataValues.id) return res.status(403).json({message:'Cannot edit bookings that are not yours'})
     if(startDate >=endDate){
-        return res.status(400).json({message:"Bad Request", errors:{endDate:"endDate cannot be on or before startDate"}})
+        return res.status(400).json({message:"Bad Request", errors:{endDate:"Check-Out cannot be before Check-In"}})
       }
     let bookingDay= new Date(startDate)
     let today = new Date()
 
-    if(today >= bookingDay) return res.status(403).json({message: "Past bookings can't be modified"})
+    if(today >= bookingDay) return res.status(403).json({message:"Bad Request", errors:{endDate: "Past bookings can't be modified"}})
 
       const spot = await Spot.findOne({where:{id:bookings.spotId},include:[Booking]})
       let errors={}
@@ -78,6 +78,7 @@ router.delete('/:bookingId', requireAuth,async (req,res)=>{
     let startDay= new Date(booking.startDate)
     let endDay= new Date(booking.endDate)
     let today = new Date()
+    today=today.toISOString()
 
     if(today >= startDay && today <=endDay) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
     const spot = await Spot.findOne({where:{id:booking.spotId}})

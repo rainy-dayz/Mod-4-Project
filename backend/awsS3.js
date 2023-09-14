@@ -20,7 +20,7 @@ const singleFileUpload = async ({ file, public = false }) => {
     // S3 bucket as the key in your database for subsequent retrieval.
     return public ? result.Location : result.Key;
   };
-  const multipleFilesUpload = async ({files, public = false}) => {
+  const multipleFilesUpload = async ({files, public = true}) => {
     return await Promise.all(
       files.map((file) => {
         return singleFileUpload({file, public});

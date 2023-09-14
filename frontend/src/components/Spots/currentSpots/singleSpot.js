@@ -10,15 +10,13 @@ const SingleSpot = ({spot }) =>{
     const [openModal,setOpenModal] = useState(false)
     const history = useHistory()
     const spotImg = useSelector(state => state.spots.spot)
-  console.log('this is spotImg',spotImg)
 return (
   <>
 <div className="singleSpotcont">
           <div className="tooltip" onClick={() => { history.push(`/spots/${spot.id}`)}}>
 
             <span className="tooltiptext">{spot.name}</span>
-            <img className='pics'src={spot.previewImage} />
-            {console.log('this is a spot',spot)}
+            <img className='pics'src={spot.previewImage? spot.previewImage:"https://www.betel.uk/wp-content/uploads/property_placeholder.jpg"} />
             <div className="top">
             <p>{`${spot.city}, ${spot.state}`}</p>
             <p><span><i className="fa-solid fa-star"></i></span>{spot.avgRating ? `${spot.avgRating.toFixed(1)}`: "New"}</p>
