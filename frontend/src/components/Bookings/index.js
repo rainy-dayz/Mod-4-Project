@@ -19,8 +19,8 @@ function CurrentBookings() {
     useEffect(() => {
       // console.log('inside use effect')
       dispatch(thunkGetCurrentBookings());
-    }, [dispatch]);
-    // if(!bookings)return <></>
+    }, []);
+    if(!bookings)return <></>
     let today=new Date()
     const offset = today.getTimezoneOffset()
 today = new Date(today.getTime() - (offset*60*1000))
@@ -46,10 +46,10 @@ today = new Date(today.getTime() - (offset*60*1000))
                   setBookingid(booking.id)
                   setSpotid(booking.Spot.id)
                 }}>Edit Your Booking</button>:null}
-                <button onClick={()=> {
+                {today <=booking.startDate?<button onClick={()=> {
                   dispatch(thunkDeleteBooking(booking.id))
                   .then(()=> dispatch(thunkGetCurrentBookings()))
-                }}>Cancel Booking</button>
+                }}>Cancel Booking</button>:null}
                 </div>
                 )
               })}

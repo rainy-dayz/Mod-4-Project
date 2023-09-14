@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { useHistory } from "react-router-dom";
 import "./LoginForm.css";
+import { thunkGetCurrentBookings } from "../../store/bookings";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ function LoginFormModal() {
           return dispatch(sessionActions.login({ credential:'FakeUser1', password:'password' }))
           .then(()=>history.push('/'))
           .then(closeModal)
+          // .then(dispatch(thunkGetCurrentBookings()))
 
         }} >Demo User</button>
         <button className="demo-user" onClick={() => {
@@ -70,6 +72,7 @@ function LoginFormModal() {
           return dispatch(sessionActions.login({ credential:'Demo-lition', password:'password' }))
           .then(()=>history.push('/'))
           .then(closeModal)
+          // .then(dispatch(thunkGetCurrentBookings()))
 
         }} >Demo User 2</button>
     </div>
