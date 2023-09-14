@@ -3,7 +3,30 @@ const { Spot,SpotImage,User,Review,ReviewImage,Booking } = require('../../db/mod
 const { requireAuth} = require("../../utils/auth");
 
 const router = express.Router();
-
+let  spottest= [
+  {
+    id: 19,
+    spotId: 1,
+    userId: 2,
+    startDate: '2023-09-13',
+    endDate: '2023-09-17',
+    createdAt: '2023-09-13T01:44:04.732Z',
+    updatedAt: '2023-09-13T04:01:28.541Z',
+    Spot: {
+      id: 1,
+      ownerId: 1,
+      address: '123 Disney Lane',
+      city: 'Anaheim',
+      state: 'California',
+      country: 'United States of America',
+      lat: 37.7645358,
+      lng: -122.4730327,
+      name: 'Disneyland',
+      price: 123,
+      previewImage: 'https://wallpaperaccess.com/full/870823.jpg'
+    }
+  }
+]
 
 router.get('/current', requireAuth, async (req, res)=>{
     let answer=[]
@@ -12,7 +35,7 @@ router.get('/current', requireAuth, async (req, res)=>{
         include:{model:Spot, attributes:{exclude:['description','createdAt','updatedAt']},include:{model:SpotImage}}
 
     })
-if(!booking.length) return
+
     booking.forEach((spot)=> {
         spot =spot.toJSON()
         if(!spot.Spot.SpotImages.length) spot.previewImage='no images'
@@ -25,6 +48,7 @@ if(!booking.length) return
     delete spot.Spot.SpotImages
     answer.push(spot)
     })
+    // console.log('answeraqwfafasdfsdgaerawerhjta')
     res.json({Bookings:answer})
 });
 
