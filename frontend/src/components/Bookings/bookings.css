@@ -1,4 +1,36 @@
+button{
+    cursor:pointer
+}
 .dates23{
     display:flex;
-    
+
+}
+.bloop{
+background: rgb(237, 235, 235);
+    cursor:pointer;
+    border:none;
+    padding:4px;
+    border-radius:2px;
+
+}
+.bloop:hover{
+    background:grey;
+    color:white;
+}
+.bloop2{
+    background: rgb(237, 235, 235);
+        cursor:pointer;
+        border:none;
+        padding:4px;
+        width:113px;
+        border-radius:2px;
+    }
+.bloop2:hover{
+        background:grey;
+        color:white;
+    }
+.contforeditreviewbuttons{
+    display:flex;
+    gap:7px;
+    margin:3px;
 }

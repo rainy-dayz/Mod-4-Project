@@ -25,27 +25,33 @@
     flex-direction:column;
       align-items:center;
       justify-content: center;
-      border-radius:15%;
+      padding:10px;
+      border-radius:5px;
     }
 
     .yes{
-      background:red;
-      color:white;
-      padding:5px 30px;
+      /* background:red; */
+      background:lightgrey;
+      padding:5px;
       border-radius:3%;
-      /* border:none; */
+      border:none;
       /* padding:2px 15px; */
-      font-size:15px;
+      /* font-size:15px; */
+
     }
-    .yes :hover{
-      background:rgb(50, 3, 3);
+    .yes:hover{
+      background:rgb(156, 6, 6);
+      color:white;
     }
 .no{
-  background:grey;
-  color:white;
-  padding:7px 30px;
+  background:lightgray;
+  padding:5px;
   border-radius:3%;
   border:none;
       /* padding:2px 15px; */
-      font-size:15px;
+      /* font-size:15px; */
+}
+.no:hover{
+  background:rgb(50, 3, 3);
+  color:white;
 }

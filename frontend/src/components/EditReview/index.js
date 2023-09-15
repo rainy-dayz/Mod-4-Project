@@ -70,11 +70,11 @@ const [stars, setStars] = useState(star)
           Stars
         </label>
           </div>
-          <div className='bttninreviewmodal'>
-              <button className="cancelreviewmodal" onClick={()=>
+          <div className='contforeditreviewbuttons'>
+        <button  className="bloop"  disabled={disable} type="submit" onClick={handleSubmit}>Submit your Review</button>
+              <button className="bloop" onClick={()=>
                 closeModal(false)
                 }>Cancel</button>
-        <button  className="submitreviewmodal"  disabled={disable} type="submit" onClick={handleSubmit}>Submit your Review</button>
           </div>
           </div>
        </form>

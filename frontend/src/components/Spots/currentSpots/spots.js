@@ -46,6 +46,18 @@ function Spots() {
 
         })}
         </div>
+
+        <div className="myinfocont">
+                            <div className="headersh5">Brought to you by:</div>
+                                <div className='LandingDevName'>Emily Breininger </div>
+                                <a className="githibbutton" href='https://github.com/rainy-dayz'
+                    ><i className="fa-brands fa-github"></i></a>
+                    <a className="githibbutton2" href='https://www.linkedin.com/in/emily-breininger'
+                    ><i className="fa-brands fa-linkedin"></i></a>
+
+
+
+                    </div>
       </div>
     )
   }

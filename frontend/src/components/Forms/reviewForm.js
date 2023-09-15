@@ -68,13 +68,15 @@ const ReviewForm = ({ closeModal, formType, reviews }) => {
           Stars
         </label>
           </div>
-        <button type="submit" disabled={disable}onClick={()=>
+          <div className='contforeditreviewbuttons'>
+        <button className="bloop" type="submit" disabled={disable}onClick={()=>
           {
           return handleSubmit
           }}>Submit your Review</button>
-              <button onClick={()=>
+              <button className="bloop" onClick={()=>
                 closeModal(false)
                 }>Cancel</button>
+          </div>
           </div>
        </form>
           </div>

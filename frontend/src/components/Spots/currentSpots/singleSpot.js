@@ -24,8 +24,8 @@ return (
             <p>{`$${spot.price} night`}</p>
             </div>
             <div className="buttons">
-        <button onClick={() => { history.push(`/spots/${spot.id}/edit`)}}>Update</button>
-        <button  onClick={()=>setOpenModal(true)}>
+        <button className="bloop" onClick={() => { history.push(`/spots/${spot.id}/edit`)}}>Update</button>
+        <button  className="bloop" onClick={()=>setOpenModal(true)}>
           Delete
         </button>
           {openModal && <DeleteModal closeDeleteModal = {setOpenModal} spot = {spot} />}

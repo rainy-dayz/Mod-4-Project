@@ -25,20 +25,24 @@ function LoginFormModal() {
           setErrors(data.errors);
         }
       });
-  };
-  let disable=true
-  if(credential.length >3 || password.length >5){
-    disable =false
-  }
-  return (
-    <div className="loginBtn">
+    };
+    let disable=true
+    if(credential.length >3 || password.length >5){
+      disable =false
+    }
+    return (
+      <div className="loginBtn">
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="loginformform" onSubmit={handleSubmit}>
+      {errors.credential && (
+        <p className="errors">{errors.credential}</p>
+      )}
         <label>
           Username or Email
           <input
           className="input-field"
             type="text"
+            size="30"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
@@ -50,13 +54,11 @@ function LoginFormModal() {
           className="input-field"
             type="password"
             value={password}
+            size="30"
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </label>
-        {errors.credential && (
-          <p className="errors">{errors.credential}</p>
-        )}
         <button className="login-btn" type="submit" onClick={() => history.push('/')} disabled={disable}>Log In</button>
       </form>
         <button className="demo-user" onClick={() => {

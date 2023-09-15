@@ -27,7 +27,7 @@ function CurrentSpots() {
     return (
       <main>
         <h1>Manage Spots</h1>
-        {!spots.length ?<button onClick={() => { history.push(`/spots/new`)}}>Create a New Spot</button>: null}
+        {!spots.length ?<button className="bloop" onClick={() => { history.push(`/spots/new`)}}>Create a New Spot</button>: null}
         {/* <Link to = '/spots/new'>Create a New Spot</Link> */}
         {/* <Link to = '/spots/:spotId/edit'>Edit a Spot</Link> */}
         <div>

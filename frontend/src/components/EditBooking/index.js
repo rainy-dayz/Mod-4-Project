@@ -110,11 +110,11 @@ const EditBooking = ({ closeModal,bookingId,startDay,endDay,spotId }) => {
             onChange={(e) => setEndDate1(e.target.value)}
           />
         </label> */}
-          <div className='bttninreviewmodal'>
-            <button className="cancelreviewmodal" onClick={()=>
+           <div className='contforeditreviewbuttons'>
+            <button className="bloop" onClick={()=>
               closeModal(false)
               }>Cancel</button>
-        <button className="submitreviewmodal" type="submit" onClick={()=>
+        <button className="bloop" type="submit" onClick={()=>
           {
           return handleSubmit
           }}>Book</button>

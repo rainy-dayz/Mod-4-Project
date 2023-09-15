@@ -78,7 +78,7 @@ return (
       <h2>{formType}</h2>
       <div className = "address-info">
       <div className="header-info">
-      <h4>Where's your place located?</h4>
+      <h4>Where's your themepark located?</h4>
       <h5>Guests will only get exact address once they have booked a reservation.</h5>
       </div>
       <div >
@@ -128,38 +128,13 @@ return (
           />
           </label>
        </div>
-      {/* <div className="latLng">
-      <label>
-        Latitude
-      <div className="errors">{errors.lat}</div>
-        <input
-          type="number"
-          // min="-90" max="90"
-          step="any"
-          placeholder="Latitude"
-          value={lat}
-          onChange={(e) => setLat(e.target.value)}
-        />
-      </label>
-      <label>
-        Longitude
-      <div className="errors">{errors.lng}</div>
-        <input
-          type="number"
-          // min="-180" max="180"
-          step="any"
-          placeholder="Longitude"
-          value={lng}
-          onChange={(e) => setLng(e.target.value)}
-        />
-      </label>
-       </div> */}
+
        </div>
       <div className = "address-info">
       <label>
         <div className="info">
-        <h4>Describe your place to guests</h4>
-        <h5>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h5>
+        <h4>Describe your thempark to guests</h4>
+        <h5>Mention the best features of your themepark!</h5>
         </div>
         <textarea
           type="text"
@@ -174,8 +149,8 @@ return (
       <div className = "address-info">
       <label>
         <div className= "info">
-      <h4>Create a title for your spot</h4>
-        <h5>Catch guests' attention with a spot title that highlights what makes your place special</h5>
+      <h4>Themepark Name</h4>
+        <h5>Catch guests' attention with your themepark's name!</h5>
         </div>
         <input
           type="text"
@@ -191,7 +166,7 @@ return (
       <label className="price">
       <div className= "price-info">
         <div className= "info">
-      <h4>Set a base price for your spot</h4>
+      <h4>Set a base price for your themepark</h4>
         <h5>Competitive pricing can help your listing stand out and rank higher in search results.</h5>
         </div>
         <div className="price-input-line">
@@ -208,78 +183,25 @@ return (
         </div>
       </label>
        </div>
-       {/* {formType==="Create Spot" ?
-       <div className="address-info">
+
+
+{hasSubmitted && <div className="errors">{errors.images}</div>}
+{formType==="Create Spot" ?
+<div className="address-info">
        <div>
       <label>
       <div className= "info">
-      <h4>Liven up your spot with photos</h4>
-        <h5>Submit a link to at least one photo to publish your spot.</h5>
+      <h4>Liven up your themepark with photos</h4>
+        <h5>Upload up to 5 photos of your themepark!</h5>
         </div>
-        <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            multiple
-            onChange={updateFiles} />
-       {hasSubmitted &&<div className="errors">{errors.previewImage}</div>}
-      </label>
-       </div>
-       <div>
-      <label>
-        <input
-          type="text"
-          size="50"
-          placeholder="Image URL"
-          value={previewImage2}
-          onChange={(e) => setPreviewImage2(e.target.value)}
-        />
-
-      </label>
-       </div>
-       <div>
-      <label>
-        <input
-          type="text"
-          size="50"
-          placeholder="Image URL"
-          value={previewImage3}
-          onChange={(e) => setPreviewImage3(e.target.value)}
-        />
-      </label>
-       </div>
-       <div>
-      <label>
-        <input
-          type="text"
-          size="50"
-          placeholder="Image URL"
-          value={previewImage4}
-          onChange={(e) => setPreviewImage4(e.target.value)}
-        />
-      </label>
-       </div>
-       <div >
-      <label>
-        <input
-          type="text"
-          size="50"
-          placeholder="Image URL"
-          value={previewImage5}
-          onChange={(e) => setPreviewImage5(e.target.value)}
-        />
-      </label>
-       </div>
-       </div>
-       :null} */}
-{hasSubmitted &&<div className="errors">{errors.images}</div>}
-<label>
-          Images to Upload
           <input
             type="file"
             accept=".jpg, .jpeg, .png"
             multiple
             onChange={updateFiles} />
         </label>
+         </div>
+      </div>:null}
        <div className="btn-cont">
       <button className="submitBtn" type="submit">{formType}</button>
       </div>

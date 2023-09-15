@@ -71,14 +71,7 @@ input[type='number']{
     flex-direction: column;
 }
 
-button{
-    margin:10px;
-    width:fit-content;
-    align-items:center;
-    background:red;
-    color:white;
-    cursor:pointer;
-}
+
 
 .btn-cont {
     display: flex;
@@ -92,5 +85,14 @@ button{
 }
 
 .submitBtn{
-    background:red;
+    margin:10px;
+    width:fit-content;
+    align-items:center;
+    border:none;
+    cursor:pointer;
+    padding:5px;
+}
+.submitBtn:hover{
+    background:grey;
+    color:white;
 }

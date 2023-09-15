@@ -60,8 +60,8 @@ let createReviewButton = false
     <>
     {openModal && <ReviewForm closeModal ={setOpenModal}/>}
 
-     {createReviewButton && <button onClick={()=>setOpenModal(true)}>Post Your Review</button>}
-     {user.user && !spotArr.length && user.user.id !== spot.ownerId ? <div className="post-review"><button onClick={()=>setOpenModal(true)}>Post Your Review</button>Be the first to post a review!</div> : null}
+     {createReviewButton && <button className="bloop2" onClick={()=>setOpenModal(true)}>Post Your Review</button>}
+     {user.user && !spotArr.length && user.user.id !== spot.ownerId ? <div className="post-review"><button className="bloop2" onClick={()=>setOpenModal(true)}>Post Your Review</button>Be the first to post a review!</div> : null}
      {spotArr.toReversed().map((r) =>{
   // {console.log('chickensss',r)}
       return( <div key ={r.id}>
@@ -77,11 +77,11 @@ let createReviewButton = false
           <div className="text">{r.review}</div>
           {openModal1 && user.user && user.user.id == r.userId &&<EditReview closeModal = {setOpenModal1} r={r} rev={r.review} star={r.stars} spotId={spotId}/>}
           <div className='contforeditreviewbuttons'>
-          {(user.user ?user.user.id : Infinity) === r.userId ? <button  onClick={()=>setOpenModal1(true)}>
+          {(user.user ?user.user.id : Infinity) === r.userId ? <button  className="bloop"onClick={()=>setOpenModal1(true)}>
             Edit Review
           </button> : null
             }
-          {(user.user ?user.user.id : Infinity) === r.userId ? <button  onClick={()=>setOpenModal2(true)}>
+          {(user.user ?user.user.id : Infinity) === r.userId ? <button className="bloop" onClick={()=>setOpenModal2(true)}>
             Delete Review
           </button> : null
             }</div>

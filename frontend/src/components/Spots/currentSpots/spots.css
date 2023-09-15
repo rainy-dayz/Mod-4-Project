@@ -2,9 +2,7 @@ body{
     /* border:1px solid #A52A2A; */
     text-decoration:none;
 }
-/* button{
-  background:grey;
-} */
+
 .top{
     display: flex;
 
@@ -87,6 +85,45 @@ body{
     justify-content: space-around;
     align-items: center;
 
+}
+.myinfocont{
+  border-top:1px solid black;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.LandingDevName {
+  padding: 10px;
+
+}
+
+.githibbutton{
+  background:transparent;
+  border:none;
+  font-size:20px;
+  cursor:pointer;
+  padding:1px 3px;
+  color:black;
+}
+.githibbutton2{
+  font-size:20px;
+  color:black;
+  cursor:pointer;
+  padding:1px 3px;
+}
+.githibbutton2:hover{
+  background:black;
+  color:white;
+  border-radius:5px;
+  padding:1px 3px;
+  }
+.githibbutton:hover{
+background:black;
+color:white;
+border-radius:5px;
+padding:1px 3px;
 }
 @media only screen and (max-width: 1010px) {
   .allimages-box {

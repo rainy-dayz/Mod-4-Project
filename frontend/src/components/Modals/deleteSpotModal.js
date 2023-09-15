@@ -18,8 +18,10 @@ const DeleteModal = ({spot, closeDeleteModal}) =>{
                 <h2>Confirm Delete</h2>
                 <h4>Are you sure you want to remove this spot?</h4>
                 {/* </div> */}
+                <div className='contforeditreviewbuttons'>
                 <button className="yes" onClick ={handleDelete}>Yes (Delete Spot)</button>
                 <button className="no" onClick = {() =>closeDeleteModal(false)}>No (Keep Spot)</button>
+                </div>
             </div>
         </div>
     )

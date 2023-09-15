@@ -4,8 +4,7 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    /* background:black; */
-    /* border:1px solid black; */
+    width: 400px;
 
 }
 
@@ -14,10 +13,13 @@
    width: fit-content;
 }
 .signUpBtn{
-    background:red;
-    padding:5px 20px;
-    color:white;
-    box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+    cursor:pointer;
+  padding:4px 50px;
+  background:blue;
+  color:white;
+  border:none;
+  border-radius:2px;
+
 }
 
   button:disabled {

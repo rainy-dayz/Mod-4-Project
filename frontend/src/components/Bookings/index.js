@@ -3,6 +3,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { clearSingleBook, thunkDeleteBooking, thunkGetCurrentBookings } from '../../store/bookings';
 import EditBooking from '../EditBooking';
+import "./bookings.css"
 
 
 function CurrentBookings() {
@@ -40,17 +41,19 @@ today = new Date(today.getTime() - (offset*60*1000))
                 <div>{`${booking.startDate.slice(5,7)}/${booking.startDate.slice(8,10)}/${booking.startDate.slice(0,4)} - ${booking.endDate.slice(5,7)}/${booking.endDate.slice(8,10)}/${booking.endDate.slice(0,4)}`}</div>
 
                 </div>
-                {today <=booking.startDate?<button className="openingoftheeditmodal" onClick={()=>
+                <div className='contforeditreviewbuttons'>
+                {today <=booking.startDate?<button className="bloop" onClick={()=>
                   {setOpenModal(true)
                   setStartDate(booking.startDate)
                   setEndDate(booking.endDate)
                   setBookingid(booking.id)
                   setSpotid(booking.Spot.id)
-                }}>Edit Your Booking</button>:null}
-                {today <=booking.startDate?<button onClick={()=> {
+                }}>Edit Booking</button>:null}
+                {today <=booking.startDate?<button className="bloop" onClick={()=> {
                   dispatch(thunkDeleteBooking(booking.id))
                   .then(()=> dispatch(thunkGetCurrentBookings()))
                 }}>Cancel Booking</button>:null}
+                </div>
                 </div>
                 )
               })}

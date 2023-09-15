@@ -39,6 +39,7 @@
     color:white;
     width:fit-content;
     padding:15px 140px;
+    margin:5px;
 }
 .reserve:hover{
 background:rgb(212, 12, 12);
@@ -71,7 +72,7 @@ background:rgb(212, 12, 12);
     margin:0px 10px;
 }
 .emptydiv{
-  
+
     width:fit-content;
     padding:15px 140px;
 }
