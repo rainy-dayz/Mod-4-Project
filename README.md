@@ -45,6 +45,26 @@ Adventureland is a themepark booking website inspired by AirBnB. In which a user
 - Users should be able to update bookings they created.
 - Users should be able to delete bookings they created.
 
+# Photos
+### Landing Page
+![Screen Shot 2023-09-14 at 10 23 35 PM](https://github.com/rainy-dayz/Mod-4-Project/assets/124620939/cb836e0d-6716-4b3c-a7b4-4e6c68154992)
+
+
+
+### Single Spot Page
+![Screen Shot 2023-09-14 at 10 24 08 PM](https://github.com/rainy-dayz/Mod-4-Project/assets/124620939/25332bfa-7e88-4e4f-8013-ec9a721fd31b)
+
+
+
+### Current Bookings Page
+![Screen Shot 2023-09-14 at 10 26 21 PM](https://github.com/rainy-dayz/Mod-4-Project/assets/124620939/1a4c6cf8-33af-4f1c-abc4-0dd345b35817)
+
+
+
+
+### Search Bar
+![Screen Shot 2023-09-06 at 5 04 38 PM](https://github.com/rainy-dayz/books-clone/assets/124620939/a03fe757-535e-466d-8a85-99c595e05c3d)
+
 ## Installation Instructions
 
 1. Install dependencies
