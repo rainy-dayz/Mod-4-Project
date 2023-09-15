@@ -60,11 +60,6 @@ Adventureland is a themepark booking website inspired by AirBnB. In which a user
 ![Screen Shot 2023-09-14 at 10 26 21 PM](https://github.com/rainy-dayz/Mod-4-Project/assets/124620939/1a4c6cf8-33af-4f1c-abc4-0dd345b35817)
 
 
-
-
-### Search Bar
-![Screen Shot 2023-09-06 at 5 04 38 PM](https://github.com/rainy-dayz/books-clone/assets/124620939/a03fe757-535e-466d-8a85-99c595e05c3d)
-
 ## Installation Instructions
 
 1. Install dependencies
