@@ -4,6 +4,7 @@ const GET_BOOKINGS="bookings/GET_BOOKINGS"
 const CREATE_BOOKING = "bookings/CREATE_BOOKING"
 const DELETE_BOOKING = "bookings/DELETE_BOOKING"
 const UPDATE_BOOKING="bookings/UPDATE_BOOKING"
+const CLEAR_BOOKINGS="bookings/CLEAR_BOOKINGS"
 
 //
   const actionGetCurrent = (bookings) => ({
@@ -26,6 +27,11 @@ const UPDATE_BOOKING="bookings/UPDATE_BOOKING"
     type: UPDATE_BOOKING,
     bookingId
   })
+  export const clearSingleBook=()=>{
+    return {
+        type:CLEAR_BOOKINGS
+    }
+}
 
   export const thunkGetCurrentBookings = () => async (dispatch) => {
     try {const response = await csrfFetch(`/api/bookings/current`);
@@ -134,6 +140,7 @@ if(res.ok){
           delete newState.userBookings[action.bookingId]
           return newState
         }
+    
 
           default:
             return state;

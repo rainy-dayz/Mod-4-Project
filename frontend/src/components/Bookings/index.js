@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { thunkDeleteBooking, thunkGetCurrentBookings } from '../../store/bookings';
+import { clearSingleBook, thunkDeleteBooking, thunkGetCurrentBookings } from '../../store/bookings';
 import EditBooking from '../EditBooking';
 
 
@@ -18,8 +18,9 @@ function CurrentBookings() {
   // console.log('this is bookings', bookings)
     useEffect(() => {
       // console.log('inside use effect')
+      dispatch(clearSingleBook())
       dispatch(thunkGetCurrentBookings());
-    }, []);
+    }, [dispatch]);
     if(!bookings)return <></>
     let today=new Date()
     const offset = today.getTimezoneOffset()
